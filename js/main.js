@@ -68,8 +68,8 @@ function initCustomCursor() {
     if (target) {
       gsap.to(follower, {
         scale: 2.2,
-        backgroundColor: 'rgba(168, 85, 247, 0.18)',
-        borderColor: 'var(--accent-primary-light)',
+        backgroundColor: 'rgba(217, 119, 87, 0.16)',
+        borderColor: 'var(--accent-primary)',
         duration: 0.25,
         ease: 'power2.out',
         overwrite: 'auto',
@@ -84,7 +84,7 @@ function initCustomCursor() {
       gsap.to(follower, {
         scale: 1,
         backgroundColor: 'transparent',
-        borderColor: 'rgba(168, 85, 247, 0.45)',
+        borderColor: 'rgba(217, 119, 87, 0.45)',
         duration: 0.25,
         ease: 'power2.out',
         overwrite: 'auto',

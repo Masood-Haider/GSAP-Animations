@@ -1,6 +1,6 @@
 /**
- * Projects Section Animation Module with Audited ScrollTrigger Timing & GSAP Flip
- * Implements measured horizontal gallery scroll with full start/end visibility,
+ * Projects Section Animation Module with Compact, 100% Viewport Fit & Smooth GSAP Flip
+ * Implements calibrated horizontal gallery scroll with full card visibility,
  * center-focus card scaling, card hover micro-animations, and responsive layout.
  */
 
@@ -27,7 +27,7 @@ export function initProjects() {
   // 5. Setup GSAP Flip Category Filtering
   initProjectsFiltering(projectsSection);
 
-  console.info('[Section] Projects animations initialized with audited ScrollTrigger timing.');
+  console.info('[Section] Projects animations initialized.');
 }
 
 /**
@@ -84,7 +84,7 @@ function renderProjectCards(projectsSection) {
               <!-- Hover Slide-up Overlay & Label -->
               <div class="project-hover-overlay">
                 <span class="project-hover-pill">
-                  <span>View Architecture</span>
+                  <span>Explore</span>
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -107,9 +107,9 @@ function renderProjectCards(projectsSection) {
 
           <div class="project-link-row">
             <a href="${project.liveUrl}" class="project-link" aria-label="View live project ${project.title}">
-              <span>Explore Case</span>
-              <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <span>View Case</span>
+              <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
           </div>
@@ -152,7 +152,7 @@ function initProjectsFiltering(projectsSection) {
         });
 
         Flip.from(state, {
-          duration: 0.5,
+          duration: 0.45,
           ease: 'power2.inOut',
           scale: true,
           fade: true,
@@ -160,14 +160,14 @@ function initProjectsFiltering(projectsSection) {
           onEnter: (elements) =>
             gsap.fromTo(
               elements,
-              { opacity: 0, scale: 0.88 },
-              { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }
+              { opacity: 0, scale: 0.9 },
+              { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' }
             ),
           onLeave: (elements) =>
             gsap.to(elements, {
               opacity: 0,
-              scale: 0.88,
-              duration: 0.3,
+              scale: 0.9,
+              duration: 0.25,
               ease: 'power2.in',
             }),
           onComplete: () => {
@@ -191,7 +191,7 @@ function initProjectsFiltering(projectsSection) {
 }
 
 /**
- * Setup GSAP Horizontal Scroll Gallery with Audited Measured ScrollTrigger Timing
+ * Setup GSAP Horizontal Scroll Gallery
  */
 function initProjectsScrollAnimation(projectsSection) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -206,7 +206,7 @@ function initProjectsScrollAnimation(projectsSection) {
   mm.add('(min-width: 1025px)', () => {
     // Accurately compute real horizontal scroll distance from live DOM width
     const getScrollDistance = () => {
-      const distance = projectsTrack.scrollWidth - window.innerWidth + 80;
+      const distance = projectsTrack.scrollWidth - window.innerWidth + 100;
       return Math.max(0, distance);
     };
 
@@ -218,7 +218,7 @@ function initProjectsScrollAnimation(projectsSection) {
         trigger: projectsSection,
         pin: true,
         start: 'top top',
-        end: () => `+=${getScrollDistance() + Math.max(window.innerHeight * 0.45, 350)}`,
+        end: () => `+=${getScrollDistance() + 250}`,
         scrub: 1,
         invalidateOnRefresh: true,
         anticipatePin: 1,
@@ -227,40 +227,38 @@ function initProjectsScrollAnimation(projectsSection) {
 
     // Card Focus Animation tied to containerAnimation
     projectCards.forEach((card, i) => {
-      // First card starts focused; other cards start slightly scaled down
       const isFirst = i === 0;
       const isLast = i === projectCards.length - 1;
 
       gsap.fromTo(
         card,
-        { scale: isFirst ? 1 : 0.9, opacity: isFirst ? 1 : 0.5 },
+        { scale: isFirst ? 1 : 0.94, opacity: isFirst ? 1 : 0.7 },
         {
           scale: 1,
           opacity: 1,
-          duration: 0.5,
+          duration: 0.4,
           ease: 'power2.out',
           scrollTrigger: {
             trigger: card,
             containerAnimation: horizontalTween,
-            start: 'left 88%',
+            start: 'left 92%',
             end: 'center 50%',
-            scrub: 0.5,
+            scrub: 0.4,
           },
         }
       );
 
-      // Cards scale down as they scroll past to the left, EXCEPT the last card which stays in view
       if (!isLast) {
         gsap.to(card, {
-          scale: 0.9,
-          opacity: 0.5,
+          scale: 0.94,
+          opacity: 0.7,
           ease: 'power2.in',
           scrollTrigger: {
             trigger: card,
             containerAnimation: horizontalTween,
             start: 'center 45%',
-            end: 'right 10%',
-            scrub: 0.5,
+            end: 'right 8%',
+            scrub: 0.4,
           },
         });
       }
@@ -272,11 +270,11 @@ function initProjectsScrollAnimation(projectsSection) {
     projectCards.forEach((card) => {
       gsap.fromTo(
         card,
-        { y: 35, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.75,
+          duration: 0.7,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
@@ -312,7 +310,7 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(overlay, {
         yPercent: 0,
         opacity: 1,
-        duration: 0.35,
+        duration: 0.3,
         ease: 'power3.out',
         overwrite: 'auto',
       });
@@ -320,8 +318,8 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(pill, {
         y: 0,
         opacity: 1,
-        duration: 0.28,
-        delay: 0.05,
+        duration: 0.25,
+        delay: 0.04,
         ease: 'power2.out',
         overwrite: 'auto',
       });
@@ -330,7 +328,7 @@ function initProjectsHoverEffects(projectsSection) {
         gsap.to(shape, {
           scale: 1.25,
           filter: 'blur(28px)',
-          duration: 0.45,
+          duration: 0.4,
           ease: 'power2.out',
           overwrite: 'auto',
         });
@@ -341,7 +339,7 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(overlay, {
         yPercent: 100,
         opacity: 0,
-        duration: 0.28,
+        duration: 0.25,
         ease: 'power2.in',
         overwrite: 'auto',
       });
@@ -358,7 +356,7 @@ function initProjectsHoverEffects(projectsSection) {
         gsap.to(shape, {
           scale: 1,
           filter: 'blur(40px)',
-          duration: 0.45,
+          duration: 0.4,
           ease: 'power2.out',
           overwrite: 'auto',
         });

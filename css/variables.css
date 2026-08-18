@@ -1,44 +1,46 @@
 /* ==========================================================================
-   Design Tokens & CSS Custom Properties - Black & Purple Palette
+   Design Tokens & CSS Custom Properties - Terracotta & Cream (Warm Editorial)
    ========================================================================== */
 
 :root {
-  /* Color Palette - Deep Pure Black & Obsidian Surface Base */
-  --bg-primary: #050507;
-  --bg-secondary: #0b0c10;
-  --bg-tertiary: #13141c;
-  --bg-card: rgba(16, 17, 26, 0.8);
-  --bg-card-hover: rgba(24, 25, 38, 0.9);
-  --bg-glass: rgba(5, 5, 7, 0.75);
-  --bg-subtle: rgba(255, 255, 255, 0.03);
+  /* Color Palette - Terracotta & Cream Base */
+  --bg-primary: #FAF6F1;             /* Warm off-white / cream */
+  --bg-secondary: #F3ECE2;           /* Warm deeper cream surface */
+  --bg-tertiary: #EBE1D3;            /* Warm muted cream */
+  --bg-card: rgba(255, 255, 255, 0.82); /* Crisp luminous card */
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-glass: rgba(250, 246, 241, 0.88);
+  --bg-subtle: rgba(43, 36, 32, 0.04);
 
   /* Borders & Dividers */
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-medium: rgba(255, 255, 255, 0.12);
-  --border-active: rgba(255, 255, 255, 0.25);
-  --border-accent: rgba(168, 85, 247, 0.35);
+  --border-subtle: rgba(43, 36, 32, 0.08);
+  --border-medium: rgba(43, 36, 32, 0.15);
+  --border-active: rgba(43, 36, 32, 0.32);
+  --border-accent: rgba(217, 119, 87, 0.4);
 
-  /* Typography Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --text-inverse: #050507;
+  /* Typography Colors - Warm Charcoal & Editorial Neutrals */
+  --text-primary: #2B2420;           /* Warm charcoal */
+  --text-secondary: #6B5E55;         /* Warm taupe-charcoal */
+  --text-muted: #9E8F84;             /* Soft warm muted */
+  --text-inverse: #FAF6F1;           /* Cream text on dark buttons */
 
-  /* Accent & Highlight Colors - Vibrant Royal & Electric Purple */
-  --accent-primary: #a855f7;
-  --accent-primary-hover: #9333ea;
-  --accent-primary-light: #c084fc;
-  --accent-glow: rgba(168, 85, 247, 0.3);
-  --accent-secondary: #d946ef;
-  --accent-secondary-glow: rgba(217, 70, 239, 0.25);
+  /* Accent & Highlight Colors - Terracotta & Soft Gold */
+  --accent-primary: #D97757;         /* Terracotta / Burnt Orange */
+  --accent-primary-hover: #C46445;   /* Deep Terracotta */
+  --accent-primary-light: #E88C6E;   /* Warm Coral Terracotta */
+  --accent-glow: rgba(217, 119, 87, 0.28);
+  
+  --accent-secondary: #C9A876;       /* Soft Gold */
+  --accent-secondary-light: #DFC59B;
+  --accent-secondary-glow: rgba(201, 168, 118, 0.24);
 
-  /* Abstract Placeholder Gradient Palette (Purple / Violet / Magenta / Dark) */
-  --grad-1: linear-gradient(135deg, #a855f7 0%, #7c3aed 50%, #c026d3 100%);
-  --grad-2: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #db2777 100%);
-  --grad-3: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-  --grad-4: linear-gradient(135deg, #d946ef 0%, #8b5cf6 50%, #4c1d95 100%);
-  --grad-dark-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-  --grad-accent-surface: linear-gradient(135deg, rgba(168, 85, 247, 0.14) 0%, rgba(217, 70, 239, 0.05) 100%);
+  /* Abstract Placeholder Gradient Palette (Terracotta, Soft Gold & Warm Coral) */
+  --grad-1: linear-gradient(135deg, #D97757 0%, #E88C6E 50%, #C9A876 100%);
+  --grad-2: linear-gradient(135deg, #C9A876 0%, #D97757 100%);
+  --grad-3: linear-gradient(135deg, #E88C6E 0%, #D97757 50%, #A34E34 100%);
+  --grad-4: linear-gradient(135deg, #DFC59B 0%, #C9A876 50%, #D97757 100%);
+  --grad-dark-surface: linear-gradient(180deg, rgba(217, 119, 87, 0.06) 0%, rgba(201, 168, 118, 0.03) 100%);
+  --grad-accent-surface: linear-gradient(135deg, rgba(217, 119, 87, 0.12) 0%, rgba(201, 168, 118, 0.08) 100%);
 
   /* Typography Fonts */
   --font-display: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -55,7 +57,7 @@
   --text-3xl: clamp(1.875rem, 1.65rem + 1.1vw, 2.375rem);
   --text-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3.25rem);
   --text-5xl: clamp(3rem, 2.4rem + 2.8vw, 4.75rem);
-  --text-display: clamp(3.5rem, 2.75rem + 4.5vw, 6.75rem);
+  --text-display: clamp(3.25rem, 2.5rem + 4.2vw, 6.25rem);
 
   /* Line Heights */
   --leading-tight: 1.08;
@@ -97,13 +99,13 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows & Glows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+  /* Warm Shadows & Glows */
+  --shadow-sm: 0 2px 10px rgba(43, 36, 32, 0.05);
+  --shadow-md: 0 10px 30px -4px rgba(43, 36, 32, 0.08);
+  --shadow-lg: 0 20px 50px -10px rgba(43, 36, 32, 0.12);
   --shadow-glow: 0 0 32px var(--accent-glow);
-  --shadow-glow-purple: 0 0 32px var(--accent-secondary-glow);
-  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-glow-secondary: 0 0 32px var(--accent-secondary-glow);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
   /* Transitions & Timing */
   --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);

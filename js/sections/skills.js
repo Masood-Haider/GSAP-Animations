@@ -128,12 +128,12 @@ function initSkillsHoverEffects(skillsElement) {
   pills.forEach((pill) => {
     pill.addEventListener('mouseenter', () => {
       gsap.to(pill, {
-        scale: 1.06,
+        scale: 1.05,
         y: -3,
-        backgroundColor: 'rgba(168, 85, 247, 0.16)',
+        backgroundColor: '#ffffff',
         borderColor: 'var(--accent-primary)',
-        color: '#ffffff',
-        boxShadow: '0 0 16px var(--accent-glow)',
+        color: 'var(--accent-primary)',
+        boxShadow: '0 4px 14px var(--accent-glow)',
         duration: 0.22,
         ease: 'power2.out',
         overwrite: 'auto',
@@ -144,10 +144,10 @@ function initSkillsHoverEffects(skillsElement) {
       gsap.to(pill, {
         scale: 1,
         y: 0,
-        backgroundColor: 'rgba(16, 17, 26, 0.8)',
-        borderColor: 'rgba(255, 255, 255, 0.07)',
+        backgroundColor: 'var(--bg-card)',
+        borderColor: 'var(--border-subtle)',
         color: 'var(--text-primary)',
-        boxShadow: 'none',
+        boxShadow: '0 1px 4px rgba(43, 36, 32, 0.04)',
         duration: 0.25,
         ease: 'power2.inOut',
         overwrite: 'auto',

@@ -1,7 +1,7 @@
 /**
  * About Section Animation Module
- * Corrected ScrollTrigger timing: Section pins starting at 'top top' once fully aligned in viewport,
- * line-by-line scrub reveals 100% before unpinning, and stats counter animates on view.
+ * Smooth viewport entrance and staggered line reveal for bio,
+ * accompanied by animated stats number counting on view without conflicting pin-locks.
  */
 
 import { portfolioData } from '../data.js';
@@ -13,13 +13,13 @@ export function initAbout() {
   // 1. Render Stats Elements into DOM
   renderAboutStats(aboutElement);
 
-  // 2. Setup Pinned Line-by-Line Bio Reveal with Scroll Scrub (Starts at 'top top')
+  // 2. Setup Smooth Line-by-Line Bio Reveal with ScrollTrigger
   initAboutTextScrub(aboutElement);
 
   // 3. Stats Counter Animation (Triggered cleanly when stats grid scrolls into view)
   initAboutStatsCounter(aboutElement);
 
-  console.info('[Section] About animations initialized with audited ScrollTrigger timing.');
+  console.info('[Section] About animations initialized.');
 }
 
 /**
@@ -44,7 +44,7 @@ function renderAboutStats(aboutElement) {
 }
 
 /**
- * Pin the section cleanly when top reaches viewport top, and reveal bio lines progressively
+ * Reveal bio lines and visual accent smoothly on scroll entry
  */
 function initAboutTextScrub(aboutElement) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -78,72 +78,44 @@ function initAboutTextScrub(aboutElement) {
     lines = Array.from(paragraphs);
   }
 
-  const mm = gsap.matchMedia();
-
-  // Desktop / Tablet (>= 768px): Pinned Scroll Scrub
-  mm.add('(min-width: 768px)', () => {
-    // Initial true state: lines start dimmed, visual card in place
-    gsap.set(lines, { opacity: 0.18, y: 14 });
-
-    const scrubTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: aboutElement,
-        start: 'top top',
-        end: () => `+=${Math.max(window.innerHeight * 1.1, 700)}`,
-        pin: true,
-        scrub: 0.8,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    });
-
-    // 1. Stagger lines to 100% opacity and y: 0 during scrub
-    scrubTimeline.to(lines, {
+  // Animate lines in as the bio block scrolls into view
+  gsap.fromTo(
+    lines,
+    { opacity: 0.18, y: 16 },
+    {
       opacity: 1,
       y: 0,
-      stagger: 0.16,
+      stagger: 0.08,
+      duration: 0.85,
       ease: 'power2.out',
-    });
-
-    // 2. Enhance visual card and accent glow during scrub
-    if (visualCard) {
-      const accent = visualCard.querySelector('.about-visual-accent');
-      scrubTimeline.to(
-        visualCard,
-        { scale: 1.02, borderColor: 'var(--border-accent)', ease: 'power2.out' },
-        0
-      );
-
-      if (accent) {
-        scrubTimeline.to(
-          accent,
-          { scale: 1.25, opacity: 0.65, ease: 'power2.out' },
-          0
-        );
-      }
+      scrollTrigger: {
+        trigger: bioBlock,
+        start: 'top 78%',
+        toggleActions: 'play none none none',
+        once: true,
+      },
     }
-  });
+  );
 
-  // Mobile (< 768px): Natural Non-Pinned Scroll Reveal
-  mm.add('(max-width: 767px)', () => {
+  // Animate visual card softly
+  if (visualCard) {
     gsap.fromTo(
-      lines,
-      { opacity: 0.25, y: 15 },
+      visualCard,
+      { opacity: 0, y: 25, scale: 0.97 },
       {
         opacity: 1,
         y: 0,
-        stagger: 0.08,
-        duration: 0.8,
-        ease: 'power2.out',
+        scale: 1,
+        duration: 0.9,
+        ease: 'power3.out',
         scrollTrigger: {
-          trigger: bioBlock,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
+          trigger: visualCard,
+          start: 'top 82%',
           once: true,
         },
       }
     );
-  });
+  }
 }
 
 /**

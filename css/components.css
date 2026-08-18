@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Component Styles
+   Component Styles - Terracotta & Cream Palette
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -52,7 +52,7 @@
   width: 10px;
   height: 10px;
   border-radius: var(--radius-full);
-  background-color: #ffffff;
+  background-color: #FAF6F1;
 }
 
 /* --------------------------------------------------------------------------
@@ -64,7 +64,7 @@
   left: 0;
   width: 6px;
   height: 6px;
-  background-color: var(--accent-primary-light);
+  background-color: var(--accent-primary);
   border-radius: var(--radius-full);
   pointer-events: none;
   z-index: 9999;
@@ -79,7 +79,7 @@
   left: 0;
   width: 36px;
   height: 36px;
-  border: 1.5px solid rgba(168, 85, 247, 0.45);
+  border: 1.5px solid rgba(217, 119, 87, 0.55);
   border-radius: var(--radius-full);
   pointer-events: none;
   z-index: 9998;
@@ -119,7 +119,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, #a855f7, #d946ef);
+  background: linear-gradient(90deg, #D97757, #C9A876);
   border-radius: var(--radius-full);
   transform: scaleX(0);
   transform-origin: left center;
@@ -150,16 +150,17 @@
   height: 44px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
-  background-color: var(--bg-subtle);
+  background-color: var(--bg-card);
   gap: 5px;
   cursor: pointer;
   z-index: var(--z-drawer);
+  box-shadow: var(--shadow-sm);
   transition: border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .menu-toggle:hover {
   border-color: var(--border-medium);
-  background-color: var(--bg-tertiary);
+  background-color: #ffffff;
 }
 
 .menu-toggle-bar {
@@ -189,7 +190,7 @@
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(5, 5, 7, 0.96);
+  background: rgba(250, 246, 241, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   z-index: calc(var(--z-drawer) - 1);
@@ -235,12 +236,12 @@
 .mobile-nav-num {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--accent-primary-light);
+  color: var(--accent-primary);
   letter-spacing: 0.05em;
 }
 
 .mobile-nav-link:hover {
-  color: var(--accent-primary-light);
+  color: var(--accent-primary);
   transform: translateX(8px);
 }
 
@@ -265,25 +266,27 @@
 .btn-primary {
   background-color: var(--accent-primary);
   color: #ffffff;
-  box-shadow: 0 0 20px var(--accent-glow);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 18px var(--accent-glow);
+  border: 1px solid rgba(217, 119, 87, 0.2);
 }
 
 .btn-primary:hover {
   background-color: var(--accent-primary-hover);
-  box-shadow: 0 0 30px var(--accent-glow);
+  box-shadow: 0 6px 24px var(--accent-glow);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background-color: var(--bg-subtle);
+  background-color: var(--bg-card);
   color: var(--text-primary);
   border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: #ffffff;
   border-color: var(--border-active);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
@@ -314,23 +317,24 @@
   align-items: center;
   gap: var(--space-xs);
   padding: 0.35rem 0.85rem;
-  background-color: var(--bg-subtle);
+  background-color: var(--bg-card);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-full);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--accent-primary-light);
+  color: var(--accent-primary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: var(--space-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .badge-dot {
   width: 6px;
   height: 6px;
   border-radius: var(--radius-full);
-  background-color: var(--accent-primary-light);
-  box-shadow: 0 0 8px var(--accent-primary-light);
+  background-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-primary);
 }
 
 .section-title {
@@ -357,11 +361,12 @@
   -webkit-backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .card:hover {
   background-color: var(--bg-card-hover);
-  border-color: var(--border-medium);
+  border-color: var(--border-accent);
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
 }
@@ -410,8 +415,8 @@
   height: 100%;
   background-size: 24px 24px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(43, 36, 32, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(43, 36, 32, 0.04) 1px, transparent 1px);
 }
 
 .abstract-badge {
@@ -420,12 +425,12 @@
   left: var(--space-md);
   padding: 0.25rem 0.6rem;
   border-radius: var(--radius-xs);
-  background: rgba(10, 11, 14, 0.7);
+  background: rgba(250, 246, 241, 0.88);
   backdrop-filter: blur(8px);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-medium);
 }
 
 /* --------------------------------------------------------------------------
@@ -443,19 +448,21 @@
   font-weight: var(--font-medium);
   color: var(--text-primary);
   transition: all var(--transition-fast);
+  box-shadow: 0 1px 4px rgba(43, 36, 32, 0.04);
 }
 
 .tag-pill:hover {
-  background-color: var(--bg-subtle);
+  background-color: #ffffff;
   border-color: var(--border-accent);
-  color: #ffffff;
+  color: var(--accent-primary);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--accent-glow);
 }
 
 .tag-pill-accent {
   background: var(--grad-accent-surface);
   border-color: var(--border-accent);
-  color: var(--accent-primary-light);
+  color: var(--accent-primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -489,7 +496,7 @@
   font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
