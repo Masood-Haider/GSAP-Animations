@@ -182,21 +182,25 @@
         </div>
       </section>
 
-      <!-- 3. Projects Section -->
+      <!-- 3. Projects Section (Horizontal Scrolling Gallery on Desktop) -->
       <section id="projects" class="section projects-section" aria-labelledby="projects-title">
-        <div class="container">
-          <div class="section-header">
-            <div class="section-badge">
-              <span class="badge-dot"></span>
-              <span>02 // Selected Projects</span>
+        <div class="projects-horizontal-pin" id="projects-pin">
+          <div class="container projects-header-container">
+            <div class="section-header">
+              <div class="section-badge">
+                <span class="badge-dot"></span>
+                <span>02 // Selected Projects</span>
+              </div>
+              <h2 id="projects-title" class="section-title">Featured Systems &amp; Applications</h2>
+              <p class="section-subtitle">A collection of full-stack platforms, algorithm visualizers, and interactive experiments built for performance and scale.</p>
             </div>
-            <h2 id="projects-title" class="section-title">Featured Systems &amp; Applications</h2>
-            <p class="section-subtitle">A collection of full-stack platforms, algorithm visualizers, and interactive experiments built for performance and scale.</p>
           </div>
 
-          <!-- Grid of placeholder project cards -->
-          <div class="projects-grid" id="projects-grid">
-            <!-- Dynamically populated by projects.js -->
+          <!-- Horizontal Track (switches to vertical grid on mobile) -->
+          <div class="projects-track-wrapper">
+            <div class="projects-track" id="projects-track">
+              <!-- Dynamically populated by projects.js -->
+            </div>
           </div>
         </div>
       </section>
