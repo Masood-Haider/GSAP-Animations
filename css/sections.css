@@ -28,6 +28,19 @@
   letter-spacing: -0.035em;
   margin-bottom: var(--space-lg);
   word-break: break-word;
+  overflow: hidden;
+}
+
+.hero-word {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.hero-char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
 }
 
 .hero-subheadline {
@@ -81,6 +94,28 @@
   background: radial-gradient(circle, var(--accent-secondary-glow) 0%, rgba(217, 70, 239, 0) 70%);
   filter: blur(80px);
   opacity: 0.55;
+}
+
+.hero-ambient-blob {
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  width: 560px;
+  height: 560px;
+  pointer-events: none;
+  opacity: 0.8;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .hero-ambient-blob {
+    width: 340px;
+    height: 340px;
+    right: -10%;
+    top: 25%;
+    opacity: 0.5;
+  }
 }
 
 .hero-grid-pattern {
