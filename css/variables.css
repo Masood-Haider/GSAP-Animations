@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Design Tokens & CSS Custom Properties - Black & Purple Palette
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Deep Pure Black & Obsidian Surface Base */
+  --bg-primary: #050507;
+  --bg-secondary: #0b0c10;
+  --bg-tertiary: #13141c;
+  --bg-card: rgba(16, 17, 26, 0.8);
+  --bg-card-hover: rgba(24, 25, 38, 0.9);
+  --bg-glass: rgba(5, 5, 7, 0.75);
+  --bg-subtle: rgba(255, 255, 255, 0.03);
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-active: rgba(255, 255, 255, 0.25);
+  --border-accent: rgba(168, 85, 247, 0.35);
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-inverse: #050507;
+
+  /* Accent & Highlight Colors - Vibrant Royal & Electric Purple */
+  --accent-primary: #a855f7;
+  --accent-primary-hover: #9333ea;
+  --accent-primary-light: #c084fc;
+  --accent-glow: rgba(168, 85, 247, 0.3);
+  --accent-secondary: #d946ef;
+  --accent-secondary-glow: rgba(217, 70, 239, 0.25);
+
+  /* Abstract Placeholder Gradient Palette (Purple / Violet / Magenta / Dark) */
+  --grad-1: linear-gradient(135deg, #a855f7 0%, #7c3aed 50%, #c026d3 100%);
+  --grad-2: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #db2777 100%);
+  --grad-3: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  --grad-4: linear-gradient(135deg, #d946ef 0%, #8b5cf6 50%, #4c1d95 100%);
+  --grad-dark-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --grad-accent-surface: linear-gradient(135deg, rgba(168, 85, 247, 0.14) 0%, rgba(217, 70, 239, 0.05) 100%);
+
+  /* Typography Fonts */
+  --font-display: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Typography Sizes (Fluid Scale) */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
+  --text-sm: clamp(0.875rem, 0.825rem + 0.25vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.65rem + 1.1vw, 2.375rem);
+  --text-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3.25rem);
+  --text-5xl: clamp(3rem, 2.4rem + 2.8vw, 4.75rem);
+  --text-display: clamp(3.5rem, 2.75rem + 4.5vw, 6.75rem);
+
+  /* Line Heights */
+  --leading-tight: 1.08;
+  --leading-snug: 1.25;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* Font Weights */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* Spacing Scale */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4.5rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
+
+  /* Layout & Container */
+  --container-max-width: 1280px;
+  --container-narrow: 960px;
+  --container-padding: clamp(1.25rem, 4vw, 3rem);
+  --section-padding-y: clamp(5rem, 10vh, 9rem);
+  --nav-height: 4.5rem;
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows & Glows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 32px var(--accent-glow);
+  --shadow-glow-purple: 0 0 32px var(--accent-secondary-glow);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Transitions & Timing */
+  --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 450ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Z-Index Hierarchy */
+  --z-negative: -1;
+  --z-base: 1;
+  --z-card: 10;
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+}
