@@ -6,14 +6,19 @@
    1. Hero Section
    -------------------------------------------------------------------------- */
 .hero-section {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero-section .container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  padding-top: calc(var(--nav-height) + var(--space-md));
-  padding-bottom: 0;
-  overflow: hidden;
+  justify-content: center;
+  padding-top: var(--nav-height);
+  padding-bottom: var(--space-xl);
+  box-sizing: border-box;
 }
 
 .hero-content {
@@ -22,7 +27,7 @@
   max-width: 960px;
   margin-top: auto;
   margin-bottom: auto;
-  padding: var(--space-lg) 0 var(--space-md) 0;
+  padding: var(--space-xl) 0;
 }
 
 .hero-headline {
