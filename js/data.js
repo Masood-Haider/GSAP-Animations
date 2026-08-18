@@ -139,6 +139,8 @@ export const portfolioData = {
     {
       category: 'Full Stack & Web Dev',
       icon: 'code',
+      proficiency: 96,
+      proficiencyLabel: '96% Production Mastery',
       items: [
         'JavaScript (ES6+)',
         'TypeScript',
@@ -153,6 +155,8 @@ export const portfolioData = {
     {
       category: 'Computer Science Core',
       icon: 'cpu',
+      proficiency: 92,
+      proficiencyLabel: '92% Academic & Problem Solving',
       items: [
         'Data Structures & Algorithms',
         'Object-Oriented Programming (OOP)',
@@ -167,6 +171,8 @@ export const portfolioData = {
     {
       category: 'Motion & Interactive UI',
       icon: 'sparkles',
+      proficiency: 95,
+      proficiencyLabel: '95% Animation Architecture',
       items: [
         'GSAP (GreenSock Animation)',
         'ScrollTrigger & Pinning',
@@ -181,6 +187,8 @@ export const portfolioData = {
     {
       category: 'Tools, DevOps & Workflow',
       icon: 'gauge',
+      proficiency: 88,
+      proficiencyLabel: '88% Engineering Workflow',
       items: [
         'Git & GitHub Version Control',
         'Docker Basics & Containerization',

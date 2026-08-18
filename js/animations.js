@@ -18,6 +18,7 @@ export function registerGSAPPlugins() {
 
   if (typeof ScrollTrigger !== 'undefined') pluginsToRegister.push(ScrollTrigger);
   if (typeof ScrollSmoother !== 'undefined') pluginsToRegister.push(ScrollSmoother);
+  if (typeof ScrollToPlugin !== 'undefined') pluginsToRegister.push(ScrollToPlugin);
   if (typeof SplitText !== 'undefined') pluginsToRegister.push(SplitText);
   if (typeof Flip !== 'undefined') pluginsToRegister.push(Flip);
 
@@ -215,4 +216,90 @@ export function splitTextReveal(target, options = {}) {
 export function createScrollTrigger(options = {}) {
   if (typeof ScrollTrigger === 'undefined') return null;
   return ScrollTrigger.create(options);
+}
+
+/**
+ * Check if the user prefers reduced motion
+ */
+export function checkReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/**
+ * Subtle parallax effects on background shapes across Hero, About, and Contact sections
+ */
+export function initParallaxEffects() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined' || checkReducedMotion()) {
+    return;
+  }
+
+  // 1. Hero background elements parallax
+  const heroShapes = document.querySelector('.hero-bg-shapes');
+  if (heroShapes) {
+    gsap.to(heroShapes, {
+      yPercent: 18,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+      },
+    });
+  }
+
+  // 2. About section accent parallax
+  const aboutAccent = document.querySelector('.about-visual-accent');
+  if (aboutAccent) {
+    gsap.to(aboutAccent, {
+      yPercent: -25,
+      scale: 1.15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#about',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.2,
+      },
+    });
+  }
+
+  // 3. Contact footer glow orb parallax
+  const contactOrb = document.querySelector('.contact-glow-orb');
+  if (contactOrb) {
+    gsap.to(contactOrb, {
+      yPercent: -30,
+      scale: 1.2,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#contact',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        scrub: 1,
+      },
+    });
+  }
+}
+
+/**
+ * Global ScrollTrigger refresh and resize listener
+ */
+export function initScrollTriggerRefresh() {
+  if (typeof ScrollTrigger === 'undefined') return;
+
+  // Refresh when web fonts are loaded to avoid layout shift bugs
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      ScrollTrigger.refresh();
+    });
+  }
+
+  // Debounced resize handler
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+  });
 }

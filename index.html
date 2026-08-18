@@ -18,10 +18,17 @@
   <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/gsap/dist/ScrollSmoother.min.js"></script>
+  <script src="https://unpkg.com/gsap/dist/ScrollToPlugin.min.js"></script>
   <script src="https://unpkg.com/gsap/dist/SplitText.min.js"></script>
   <script src="https://unpkg.com/gsap/dist/Flip.min.js"></script>
 </head>
 <body>
+
+  <!-- =========================================================================
+       Custom Mouse Cursor (GSAP quickTo follow & hover scaling)
+       ========================================================================= -->
+  <div class="custom-cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="custom-cursor-follower" id="cursor-follower" aria-hidden="true"></div>
 
   <!-- =========================================================================
        Site Header / Navigation Bar
@@ -35,13 +42,28 @@
         <span>Masood Haider</span>
       </a>
 
-      <!-- Desktop Navigation Links -->
+      <!-- Desktop Navigation Links with GSAP Animated Line Draw -->
       <nav class="nav-links" aria-label="Primary Navigation">
-        <a href="#hero" class="nav-link active">Hero</a>
-        <a href="#about" class="nav-link">About</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#hero" class="nav-link active">
+          <span>Hero</span>
+          <span class="nav-link-line" aria-hidden="true"></span>
+        </a>
+        <a href="#about" class="nav-link">
+          <span>About</span>
+          <span class="nav-link-line" aria-hidden="true"></span>
+        </a>
+        <a href="#projects" class="nav-link">
+          <span>Projects</span>
+          <span class="nav-link-line" aria-hidden="true"></span>
+        </a>
+        <a href="#skills" class="nav-link">
+          <span>Skills</span>
+          <span class="nav-link-line" aria-hidden="true"></span>
+        </a>
+        <a href="#contact" class="nav-link">
+          <span>Contact</span>
+          <span class="nav-link-line" aria-hidden="true"></span>
+        </a>
       </nav>
 
       <!-- Nav CTA & Mobile Menu Toggle -->
@@ -62,18 +84,38 @@
     </div>
   </header>
 
-  <!-- Mobile Drawer Menu -->
+  <!-- Full-Screen Mobile/Desktop Overlay Menu (Animated with GSAP Timeline) -->
   <div class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation">
-    <nav class="mobile-nav-links">
-      <a href="#hero" class="mobile-nav-link">Hero</a>
-      <a href="#about" class="mobile-nav-link">About</a>
-      <a href="#projects" class="mobile-nav-link">Projects</a>
-      <a href="#skills" class="mobile-nav-link">Skills</a>
-      <a href="#contact" class="mobile-nav-link">Contact</a>
-    </nav>
-    <a href="#contact" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;">
-      <span>Let's Talk</span>
-    </a>
+    <div class="mobile-drawer-inner">
+      <div class="mobile-drawer-header">
+        <span class="section-badge">Navigation</span>
+      </div>
+      <nav class="mobile-nav-links">
+        <a href="#hero" class="mobile-nav-link">
+          <span class="mobile-nav-num">01</span>
+          <span>Hero</span>
+        </a>
+        <a href="#about" class="mobile-nav-link">
+          <span class="mobile-nav-num">02</span>
+          <span>About</span>
+        </a>
+        <a href="#projects" class="mobile-nav-link">
+          <span class="mobile-nav-num">03</span>
+          <span>Projects</span>
+        </a>
+        <a href="#skills" class="mobile-nav-link">
+          <span class="mobile-nav-num">04</span>
+          <span>Skills</span>
+        </a>
+        <a href="#contact" class="mobile-nav-link">
+          <span class="mobile-nav-num">05</span>
+          <span>Contact</span>
+        </a>
+      </nav>
+      <a href="#contact" class="btn btn-primary btn-lg mobile-cta-btn" style="width: 100%; justify-content: center;">
+        <span>Let's Talk</span>
+      </a>
+    </div>
   </div>
 
   <!-- =========================================================================
@@ -230,6 +272,11 @@
 
       <!-- 5. Contact / Footer Section -->
       <footer id="contact" class="section contact-section" aria-labelledby="contact-title">
+        <!-- Abstract Background Glow Shapes for Parallax -->
+        <div class="contact-bg-shapes" aria-hidden="true">
+          <div class="contact-glow-orb"></div>
+        </div>
+
         <div class="container">
           <div class="contact-cta-block">
             <div class="section-badge">

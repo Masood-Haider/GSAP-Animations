@@ -178,3 +178,38 @@ img, svg {
 .text-muted {
   color: var(--text-muted);
 }
+
+/* ==========================================================================
+   Accessibility: prefers-reduced-motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  #smooth-wrapper {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #smooth-content {
+    position: static !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  .hero-ambient-blob,
+  .hero-glow-orb-1,
+  .hero-glow-orb-2,
+  .contact-glow-orb {
+    transform: none !important;
+    animation: none !important;
+  }
+}
