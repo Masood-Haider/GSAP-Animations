@@ -62,10 +62,10 @@
 }
 
 .hero-subheadline {
-  font-size: var(--text-xl);
-  line-height: var(--leading-relaxed);
+  font-size: clamp(1.25rem, 1.15rem + 0.45vw, 1.45rem);
+  line-height: 1.65;
   color: var(--text-secondary);
-  max-width: 680px;
+  max-width: 720px;
   margin-bottom: var(--space-xl);
   font-weight: var(--font-regular);
   position: relative;

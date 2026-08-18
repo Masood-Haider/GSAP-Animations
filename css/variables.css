@@ -57,7 +57,7 @@
   --text-3xl: clamp(1.875rem, 1.65rem + 1.1vw, 2.375rem);
   --text-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3.25rem);
   --text-5xl: clamp(2.4rem, 2rem + 2.2vw, 3.8rem);
-  --text-display: clamp(2.6rem, 2rem + 3.4vw, 4.8rem);
+  --text-display: clamp(2.85rem, 2.2rem + 3.6vw, 5.2rem);
 
   /* Line Heights */
   --leading-tight: 1.08;
