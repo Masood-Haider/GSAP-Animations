@@ -55,20 +55,20 @@ function initHeroMarquee(heroElement) {
     .join('');
 
   if (typeof gsap !== 'undefined') {
-    // Seamless horizontal marquee loop with constant velocity
+    // Seamless calm horizontal marquee loop
     const marqueeTween = gsap.to(marqueeTrack, {
       xPercent: -50,
       repeat: -1,
-      duration: 25,
+      duration: 55,
       ease: 'none',
     });
 
     if (marqueeContainer) {
       marqueeContainer.addEventListener('mouseenter', () => {
-        gsap.to(marqueeTween, { timeScale: 0.4, duration: 0.5, ease: 'power1.out' });
+        gsap.to(marqueeTween, { timeScale: 0.3, duration: 0.8, ease: 'power1.out' });
       });
       marqueeContainer.addEventListener('mouseleave', () => {
-        gsap.to(marqueeTween, { timeScale: 1, duration: 0.5, ease: 'power1.out' });
+        gsap.to(marqueeTween, { timeScale: 1, duration: 0.8, ease: 'power1.out' });
       });
     }
   }

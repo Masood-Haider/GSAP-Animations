@@ -56,8 +56,8 @@
   --text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);
   --text-3xl: clamp(1.875rem, 1.65rem + 1.1vw, 2.375rem);
   --text-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3.25rem);
-  --text-5xl: clamp(3rem, 2.4rem + 2.8vw, 4.75rem);
-  --text-display: clamp(3.25rem, 2.5rem + 4.2vw, 6.25rem);
+  --text-5xl: clamp(2.4rem, 2rem + 2.2vw, 3.8rem);
+  --text-display: clamp(2.6rem, 2rem + 3.4vw, 4.8rem);
 
   /* Line Heights */
   --leading-tight: 1.08;
@@ -84,12 +84,12 @@
   --space-4xl: 6rem;
   --space-5xl: 8rem;
 
-  /* Layout & Container */
-  --container-max-width: 1280px;
-  --container-narrow: 960px;
-  --container-padding: clamp(1.25rem, 4vw, 3rem);
-  --section-padding-y: clamp(5rem, 10vh, 9rem);
-  --nav-height: 4.5rem;
+  /* Layout & Container - 20% Proportionate Reduction */
+  --container-max-width: 1100px;
+  --container-narrow: 800px;
+  --container-padding: clamp(1rem, 3.2vw, 2.4rem);
+  --section-padding-y: clamp(3.8rem, 8vh, 6.8rem);
+  --nav-height: 3.75rem;
 
   /* Border Radii */
   --radius-xs: 4px;

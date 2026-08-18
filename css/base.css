@@ -9,7 +9,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 80%; /* Scales all rem-based typography, spacing, and dimensions down by 20% */
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   background-color: var(--bg-primary);
@@ -166,20 +166,20 @@ img, svg {
 }
 
 .text-gradient {
-  color: var(--accent-primary);
-  background: linear-gradient(135deg, #D97757 0%, #C9A876 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent-primary) !important;
+  -webkit-text-fill-color: var(--accent-primary) !important;
   display: inline;
 }
 
 .text-gradient * {
-  color: inherit;
-  -webkit-text-fill-color: inherit;
+  color: var(--accent-primary) !important;
+  -webkit-text-fill-color: var(--accent-primary) !important;
+  background: none !important;
 }
 
 .text-accent {
-  color: var(--accent-primary-light);
+  color: var(--accent-primary) !important;
+  -webkit-text-fill-color: var(--accent-primary) !important;
 }
 
 .text-muted {
