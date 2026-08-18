@@ -14,13 +14,12 @@
   <!-- Core Design System & Styles (Black & Purple Theme) -->
   <link rel="stylesheet" href="./css/style.css" />
 
-  <!-- GSAP Core & Plugins via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
-  <!-- Club GreenSock Trial Plugins for ScrollSmoother & SplitText -->
-  <script src="https://assets.codepen.io/16327/ScrollSmoother.min.js"></script>
-  <script src="https://assets.codepen.io/16327/SplitText3.min.js"></script>
+  <!-- GSAP Core & Standard Plugins (Free in standard GSAP distribution) -->
+  <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/gsap/dist/ScrollSmoother.min.js"></script>
+  <script src="https://unpkg.com/gsap/dist/SplitText.min.js"></script>
+  <script src="https://unpkg.com/gsap/dist/Flip.min.js"></script>
 </head>
 <body>
 
@@ -193,6 +192,11 @@
               </div>
               <h2 id="projects-title" class="section-title">Featured Systems &amp; Applications</h2>
               <p class="section-subtitle">A collection of full-stack platforms, algorithm visualizers, and interactive experiments built for performance and scale.</p>
+            </div>
+
+            <!-- Category Filter Buttons Bar (Animated with GSAP Flip) -->
+            <div class="projects-filter-bar" id="projects-filter-bar" role="tablist" aria-label="Filter Projects by Category">
+              <!-- Dynamically populated by projects.js -->
             </div>
           </div>
 

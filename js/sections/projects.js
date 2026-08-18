@@ -1,25 +1,61 @@
 /**
- * Projects Section Animation Module
- * Implements horizontal scrolling gallery driven by vertical scroll using GSAP ScrollTrigger,
- * card scaling/opacity on center focus, card hover overlays, and responsive mobile fallback.
+ * Projects Section Animation Module with GSAP Flip Category Filtering
+ * Implements category filtering with GSAP Flip, horizontal gallery on desktop,
+ * center-focus card scaling, card hover micro-animations, and responsive layout.
  */
 
 import { portfolioData } from '../data.js';
+
+let activeFilter = 'all';
 
 export function initProjects() {
   const projectsSection = document.querySelector('#projects');
   if (!projectsSection) return;
 
-  // 1. Render Project Cards into Track
+  // 1. Render Filter Bar Buttons
+  renderFilterButtons(projectsSection);
+
+  // 2. Render Project Cards into Track
   renderProjectCards(projectsSection);
 
-  // 2. Setup GSAP Horizontal Scroll & Responsive Animations
+  // 3. Setup GSAP Horizontal Scroll & Responsive Animations
   initProjectsScrollAnimation(projectsSection);
 
-  // 3. Setup Interactive GSAP Card Hover Micro-animations
+  // 4. Setup Interactive GSAP Card Hover Micro-animations
   initProjectsHoverEffects(projectsSection);
 
-  console.info('[Section] Projects animations initialized.');
+  // 5. Setup GSAP Flip Category Filtering
+  initProjectsFiltering(projectsSection);
+
+  console.info('[Section] Projects animations with GSAP Flip initialized.');
+}
+
+/**
+ * Render category filter buttons with badge counts
+ */
+function renderFilterButtons(projectsSection) {
+  const filterBar = projectsSection.querySelector('#projects-filter-bar');
+  if (!filterBar || !portfolioData.projectFilters) return;
+
+  const projects = portfolioData.projects || [];
+
+  filterBar.innerHTML = portfolioData.projectFilters
+    .map((filter) => {
+      const count =
+        filter.slug === 'all'
+          ? projects.length
+          : projects.filter((p) => p.categorySlug === filter.slug).length;
+
+      const isActive = filter.slug === activeFilter ? 'is-active' : '';
+
+      return `
+        <button class="filter-btn ${isActive}" data-filter="${filter.slug}" role="tab" aria-selected="${isActive ? 'true' : 'false'}">
+          <span>${filter.label}</span>
+          <span class="filter-btn-count">${count}</span>
+        </button>
+      `;
+    })
+    .join('');
 }
 
 /**
@@ -36,7 +72,7 @@ function renderProjectCards(projectsSection) {
         .join('');
 
       return `
-        <article class="card project-card" data-project-id="${project.id}">
+        <article class="card project-card" data-project-id="${project.id}" data-category="${project.categorySlug || 'fullstack'}">
           <div class="project-card-image-wrap">
             <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for ${project.title}">
               <div class="abstract-shape-mesh"></div>
@@ -48,7 +84,7 @@ function renderProjectCards(projectsSection) {
               <!-- Hover Slide-up Overlay & Label -->
               <div class="project-hover-overlay">
                 <span class="project-hover-pill">
-                  <span>View Project</span>
+                  <span>View Architecture</span>
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -71,7 +107,7 @@ function renderProjectCards(projectsSection) {
 
           <div class="project-link-row">
             <a href="${project.liveUrl}" class="project-link" aria-label="View live project ${project.title}">
-              <span>Explore Architecture</span>
+              <span>Explore Case</span>
               <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -81,6 +117,88 @@ function renderProjectCards(projectsSection) {
       `;
     })
     .join('');
+}
+
+/**
+ * Category Filtering with GSAP Flip for smooth fluid repositioning
+ */
+function initProjectsFiltering(projectsSection) {
+  const filterBtns = projectsSection.querySelectorAll('.filter-btn');
+  const allCards = projectsSection.querySelectorAll('.project-card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selectedSlug = btn.getAttribute('data-filter');
+      if (selectedSlug === activeFilter) return;
+
+      activeFilter = selectedSlug;
+
+      // Update button active states
+      filterBtns.forEach((b) => {
+        const isCurrent = b.getAttribute('data-filter') === selectedSlug;
+        b.classList.toggle('is-active', isCurrent);
+        b.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+      });
+
+      // Execute Flip Animation if Flip plugin is available
+      if (typeof Flip !== 'undefined') {
+        // 1. Record current state of all project cards
+        const state = Flip.getState(allCards, {
+          props: 'opacity,transform',
+        });
+
+        // 2. Mutate DOM / Visibility
+        allCards.forEach((card) => {
+          const cardCat = card.getAttribute('data-category');
+          const shouldShow = selectedSlug === 'all' || cardCat === selectedSlug;
+
+          if (shouldShow) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // 3. Animate smoothly from recorded state to new layout
+        Flip.from(state, {
+          duration: 0.55,
+          ease: 'power2.inOut',
+          scale: true,
+          fade: true,
+          absolute: false,
+          onEnter: (elements) =>
+            gsap.fromTo(
+              elements,
+              { opacity: 0, scale: 0.85 },
+              { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }
+            ),
+          onLeave: (elements) =>
+            gsap.to(elements, {
+              opacity: 0,
+              scale: 0.85,
+              duration: 0.35,
+              ease: 'power2.in',
+            }),
+          onComplete: () => {
+            // Recalculate ScrollTrigger scrollWidth and distances
+            if (typeof ScrollTrigger !== 'undefined') {
+              ScrollTrigger.refresh();
+            }
+          },
+        });
+      } else {
+        // Graceful fallback without Flip
+        allCards.forEach((card) => {
+          const cardCat = card.getAttribute('data-category');
+          const shouldShow = selectedSlug === 'all' || cardCat === selectedSlug;
+          card.style.display = shouldShow ? 'flex' : 'none';
+        });
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+        }
+      }
+    });
+  });
 }
 
 /**
@@ -97,9 +215,10 @@ function initProjectsScrollAnimation(projectsSection) {
 
   // Desktop & Large Screens (>= 1025px): Horizontal Scroll Gallery
   mm.add('(min-width: 1025px)', () => {
-    // Calculate total horizontal translation distance
+    // Calculate dynamic horizontal distance based on visible cards
     const getScrollDistance = () => {
-      return projectsTrack.scrollWidth - window.innerWidth + 140;
+      const distance = projectsTrack.scrollWidth - window.innerWidth + 140;
+      return Math.max(0, distance);
     };
 
     // Master Horizontal Scroll Tween
@@ -119,7 +238,6 @@ function initProjectsScrollAnimation(projectsSection) {
 
     // Card Focus Animation: Scale & Opacity when entering center view
     projectCards.forEach((card, i) => {
-      // First card starts focused, subsequent cards start dimmed
       const initialOpacity = i === 0 ? 1 : 0.45;
       const initialScale = i === 0 ? 1 : 0.88;
 
@@ -141,7 +259,6 @@ function initProjectsScrollAnimation(projectsSection) {
         }
       );
 
-      // Scale down gently as it exits left
       if (i < projectCards.length - 1) {
         gsap.to(card, {
           scale: 0.9,
@@ -201,7 +318,6 @@ function initProjectsHoverEffects(projectsSection) {
     gsap.set(pill, { y: 15, opacity: 0 });
 
     card.addEventListener('mouseenter', () => {
-      // Slide overlay up
       gsap.to(overlay, {
         yPercent: 0,
         opacity: 1,
@@ -210,7 +326,6 @@ function initProjectsHoverEffects(projectsSection) {
         overwrite: 'auto',
       });
 
-      // Float pill button up
       gsap.to(pill, {
         y: 0,
         opacity: 1,
@@ -220,7 +335,6 @@ function initProjectsHoverEffects(projectsSection) {
         overwrite: 'auto',
       });
 
-      // Subtle scale on inner shape
       if (shape) {
         gsap.to(shape, {
           scale: 1.25,
@@ -233,7 +347,6 @@ function initProjectsHoverEffects(projectsSection) {
     });
 
     card.addEventListener('mouseleave', () => {
-      // Slide overlay down
       gsap.to(overlay, {
         yPercent: 100,
         opacity: 0,
@@ -242,7 +355,6 @@ function initProjectsHoverEffects(projectsSection) {
         overwrite: 'auto',
       });
 
-      // Reset pill
       gsap.to(pill, {
         y: 15,
         opacity: 0,
@@ -251,7 +363,6 @@ function initProjectsHoverEffects(projectsSection) {
         overwrite: 'auto',
       });
 
-      // Reset inner shape
       if (shape) {
         gsap.to(shape, {
           scale: 1,

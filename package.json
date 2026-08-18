@@ -1,0 +1,16 @@
+{
+  "name": "gsap-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Masood Haider with Vanilla JS, CSS Design Tokens, and GSAP Motion Architecture",
+  "main": "js/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "gsap": "^3.12.5"
+  },
+  "author": "Masood Haider",
+  "license": "MIT"
+}
