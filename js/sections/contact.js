@@ -1,5 +1,5 @@
 /**
- * Contact & Footer Section Animation Module
+ * Contact & Footer Section Animation Module with Audited ScrollTrigger Timing
  * Implements interactive headline hover wobble with SplitText, ScrollTrigger entrance for CTA & socials,
  * clipboard copy micro-animations, and back-to-top handler.
  */
@@ -13,7 +13,7 @@ export function initContact() {
   // 1. Render Social Links
   renderSocialLinks(contactElement);
 
-  // 2. Setup ScrollTrigger Entrance for Contact Block & Social Icons
+  // 2. Setup Audited ScrollTrigger Entrance for Contact Block & Social Icons
   initContactScrollEntrance(contactElement);
 
   // 3. Setup Interactive CTA Heading Hover Animation (SplitText Wobble / Wave)
@@ -25,7 +25,7 @@ export function initContact() {
   // 5. Setup Back to Top Smooth Button
   initBackToTop(contactElement);
 
-  console.info('[Section] Contact & Footer animations initialized.');
+  console.info('[Section] Contact & Footer animations initialized with audited ScrollTrigger timing.');
 }
 
 /**
@@ -53,22 +53,22 @@ function initContactScrollEntrance(contactElement) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
   const ctaBlock = contactElement.querySelector('.contact-cta-block');
-  const socialBtns = contactElement.querySelectorAll('.social-link-btn');
+  const socialContainer = contactElement.querySelector('#footer-social-links');
   const footerRow = contactElement.querySelector('.footer-bottom-row');
 
-  // Entrance of main CTA block
+  // Entrance of main CTA block (triggers when CTA enters comfortable view)
   if (ctaBlock) {
     gsap.fromTo(
       ctaBlock,
-      { y: 45, opacity: 0 },
+      { y: 35, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        duration: 0.95,
+        duration: 0.85,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: ctaBlock,
-          start: 'top 85%',
+          start: 'top 80%',
           toggleActions: 'play none none none',
           once: true,
         },
@@ -77,24 +77,27 @@ function initContactScrollEntrance(contactElement) {
   }
 
   // Stagger entrance of social / contact icons
-  if (socialBtns.length > 0) {
-    gsap.fromTo(
-      socialBtns,
-      { y: 25, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.65,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: contactElement.querySelector('.site-footer'),
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-          once: true,
-        },
-      }
-    );
+  if (socialContainer) {
+    const socialBtns = socialContainer.querySelectorAll('.social-link-btn');
+    if (socialBtns.length > 0) {
+      gsap.fromTo(
+        socialBtns,
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: socialContainer,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+            once: true,
+          },
+        }
+      );
+    }
   }
 
   // Fade in footer bottom meta
@@ -104,11 +107,11 @@ function initContactScrollEntrance(contactElement) {
       { opacity: 0 },
       {
         opacity: 1,
-        duration: 0.8,
+        duration: 0.7,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: footerRow,
-          start: 'top 98%',
+          start: 'top 96%',
           once: true,
         },
       }
@@ -146,11 +149,10 @@ function initContactHeadingHover(contactElement) {
       if (isHovering) return;
       isHovering = true;
 
-      // Character wave wobble animation
       gsap.to(chars, {
-        y: -10,
-        rotate: (i) => (i % 2 === 0 ? 4 : -4),
-        stagger: 0.016,
+        y: -8,
+        rotate: (i) => (i % 2 === 0 ? 3 : -3),
+        stagger: 0.015,
         duration: 0.22,
         ease: 'power2.out',
         yoyo: true,
@@ -162,7 +164,6 @@ function initContactHeadingHover(contactElement) {
       });
     });
   } else {
-    // Fallback: elastic scaling on whole heading
     headline.addEventListener('mouseenter', () => {
       gsap.to(headline, { scale: 1.03, duration: 0.35, ease: 'back.out(2)' });
     });
@@ -183,7 +184,6 @@ function initEmailCopyHandler(contactElement) {
   copyBtn.addEventListener('click', async () => {
     const email = portfolioData.profile.email;
 
-    // Button tactile micro-bounce
     if (typeof gsap !== 'undefined') {
       gsap.timeline()
         .to(copyBtn, { scale: 0.94, duration: 0.1, ease: 'power2.in' })

@@ -1,6 +1,6 @@
 /**
- * Skills Section Animation Module
- * Implements ScrollTrigger stagger reveals for skill tags, animated horizontal proficiency bars,
+ * Skills Section Animation Module with Audited ScrollTrigger Timing
+ * Implements per-card ScrollTrigger stagger reveals for skill tags, animated horizontal proficiency bars,
  * and subtle GSAP interactive hover micro-animations.
  */
 
@@ -13,13 +13,13 @@ export function initSkills() {
   // 1. Render Categorized Skills & Proficiency Bars into DOM
   renderSkills(skillsElement);
 
-  // 2. Setup ScrollTrigger Stagger & Progress Bar Fill Animations
+  // 2. Setup Audited ScrollTrigger Stagger & Progress Bar Fill Animations
   initSkillsScrollAnimation(skillsElement);
 
   // 3. Setup GSAP Interactive Hover Micro-animations on Tags
   initSkillsHoverEffects(skillsElement);
 
-  console.info('[Section] Skills animations initialized.');
+  console.info('[Section] Skills animations initialized with audited ScrollTrigger timing.');
 }
 
 /**
@@ -65,7 +65,7 @@ function renderSkills(skillsElement) {
 }
 
 /**
- * Animate skill category cards, proficiency bars, and staggered pills on scroll into view
+ * Animate each skill category card, proficiency bar, and child pills precisely when entering viewport
  */
 function initSkillsScrollAnimation(skillsElement) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -73,73 +73,45 @@ function initSkillsScrollAnimation(skillsElement) {
   const categoryCards = skillsElement.querySelectorAll('.skill-category-card');
   if (categoryCards.length === 0) return;
 
-  // 1. Entrance of category cards
-  gsap.fromTo(
-    categoryCards,
-    { y: 35, opacity: 0 },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 0.85,
-      stagger: 0.15,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: skillsElement,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-        once: true,
-      },
-    }
-  );
-
-  // 2. Animate each card's progress bar and child pills
   categoryCards.forEach((card) => {
     const progressFill = card.querySelector('.skill-progress-bar-fill');
     const pills = card.querySelectorAll('.tag-pill');
     const targetProgress = progressFill ? parseFloat(progressFill.getAttribute('data-progress')) || 90 : 90;
 
-    // Proficiency bar fill animation
+    // Card entrance timeline tied specifically to this card's viewport entry
+    const cardTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+        once: true,
+      },
+    });
+
+    // 1. Card container enters smoothly
+    cardTl.fromTo(
+      card,
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' }
+    );
+
+    // 2. Proficiency bar animates to target percentage
     if (progressFill) {
-      gsap.fromTo(
+      cardTl.fromTo(
         progressFill,
         { width: '0%' },
-        {
-          width: `${targetProgress}%`,
-          duration: 1.5,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-            once: true,
-          },
-        }
+        { width: `${targetProgress}%`, duration: 1.2, ease: 'power2.out' },
+        '-=0.45'
       );
     }
 
-    // Staggered pill entrance
+    // 3. Child skill pills stagger in
     if (pills && pills.length > 0) {
-      gsap.fromTo(
+      cardTl.fromTo(
         pills,
-        {
-          opacity: 0,
-          y: 18,
-          scale: 0.9,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.55,
-          stagger: 0.035,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-            once: true,
-          },
-        }
+        { opacity: 0, y: 14, scale: 0.92 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.03, ease: 'power2.out' },
+        '-=0.8'
       );
     }
   });

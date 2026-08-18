@@ -1,7 +1,7 @@
 /**
  * About Section Animation Module
- * Implements section fade/scale viewport entry, pinned line-by-line paragraph scrub reveal,
- * and animated stats number counter using GSAP ScrollTrigger.
+ * Corrected ScrollTrigger timing: Section pins starting at 'top top' once fully aligned in viewport,
+ * line-by-line scrub reveals 100% before unpinning, and stats counter animates on view.
  */
 
 import { portfolioData } from '../data.js';
@@ -13,16 +13,13 @@ export function initAbout() {
   // 1. Render Stats Elements into DOM
   renderAboutStats(aboutElement);
 
-  // 2. Section Fade & Scale Entrance Animation (ScrollTrigger)
-  initAboutEntrance(aboutElement);
-
-  // 3. Pinned Line-by-Line Bio Reveal with Scroll Scrub
+  // 2. Setup Pinned Line-by-Line Bio Reveal with Scroll Scrub (Starts at 'top top')
   initAboutTextScrub(aboutElement);
 
-  // 4. Stats Counter Animation (Number Tweening)
+  // 3. Stats Counter Animation (Triggered cleanly when stats grid scrolls into view)
   initAboutStatsCounter(aboutElement);
 
-  console.info('[Section] About animations initialized.');
+  console.info('[Section] About animations initialized with audited ScrollTrigger timing.');
 }
 
 /**
@@ -47,39 +44,7 @@ function renderAboutStats(aboutElement) {
 }
 
 /**
- * Animate the whole About section fading and scaling in as it enters viewport
- */
-function initAboutEntrance(aboutElement) {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-  const container = aboutElement.querySelector('.container');
-  if (!container) return;
-
-  gsap.fromTo(
-    container,
-    {
-      opacity: 0,
-      scale: 0.95,
-      y: 45,
-    },
-    {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      duration: 1.1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: aboutElement,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-        once: true,
-      },
-    }
-  );
-}
-
-/**
- * Pin the section and reveal bio lines progressively as the user scrolls
+ * Pin the section cleanly when top reaches viewport top, and reveal bio lines progressively
  */
 function initAboutTextScrub(aboutElement) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -113,16 +78,18 @@ function initAboutTextScrub(aboutElement) {
     lines = Array.from(paragraphs);
   }
 
-  // Use ScrollTrigger matchMedia for responsive handling:
-  // Pin & Scrub on desktop/tablet (min-width: 768px), standard trigger on mobile
   const mm = gsap.matchMedia();
 
+  // Desktop / Tablet (>= 768px): Pinned Scroll Scrub
   mm.add('(min-width: 768px)', () => {
+    // Initial true state: lines start dimmed, visual card in place
+    gsap.set(lines, { opacity: 0.18, y: 14 });
+
     const scrubTimeline = gsap.timeline({
       scrollTrigger: {
         trigger: aboutElement,
-        start: 'top 12%',
-        end: '+=100%',
+        start: 'top top',
+        end: () => `+=${Math.max(window.innerHeight * 1.1, 700)}`,
         pin: true,
         scrub: 0.8,
         anticipatePin: 1,
@@ -130,51 +97,42 @@ function initAboutTextScrub(aboutElement) {
       },
     });
 
-    // Animate lines from dim/offset to full brightness
-    scrubTimeline.fromTo(
-      lines,
-      {
-        opacity: 0.15,
-        y: 16,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.18,
-        ease: 'power2.out',
-      }
-    );
+    // 1. Stagger lines to 100% opacity and y: 0 during scrub
+    scrubTimeline.to(lines, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.16,
+      ease: 'power2.out',
+    });
 
-    // Accentuate visual card during scrub
+    // 2. Enhance visual card and accent glow during scrub
     if (visualCard) {
       const accent = visualCard.querySelector('.about-visual-accent');
-      scrubTimeline.fromTo(
+      scrubTimeline.to(
         visualCard,
-        { scale: 0.98, borderColor: 'var(--border-subtle)' },
         { scale: 1.02, borderColor: 'var(--border-accent)', ease: 'power2.out' },
         0
       );
 
       if (accent) {
-        scrubTimeline.fromTo(
+        scrubTimeline.to(
           accent,
-          { scale: 0.8, opacity: 0.2 },
-          { scale: 1.25, opacity: 0.6, ease: 'power2.out' },
+          { scale: 1.25, opacity: 0.65, ease: 'power2.out' },
           0
         );
       }
     }
   });
 
-  // Mobile fallback without pinning for effortless touch scrolling
+  // Mobile (< 768px): Natural Non-Pinned Scroll Reveal
   mm.add('(max-width: 767px)', () => {
     gsap.fromTo(
       lines,
-      { opacity: 0.2, y: 15 },
+      { opacity: 0.25, y: 15 },
       {
         opacity: 1,
         y: 0,
-        stagger: 0.1,
+        stagger: 0.08,
         duration: 0.8,
         ease: 'power2.out',
         scrollTrigger: {
@@ -189,7 +147,7 @@ function initAboutTextScrub(aboutElement) {
 }
 
 /**
- * Animate the stats counting up from 0 to target number when scrolling into view
+ * Animate the stats counting up when the stats grid scrolls into view
  */
 function initAboutStatsCounter(aboutElement) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -200,17 +158,16 @@ function initAboutStatsCounter(aboutElement) {
   const statItems = statsGrid.querySelectorAll('.stat-item');
   const statValues = statsGrid.querySelectorAll('.stat-value');
 
-  // Master trigger for the stats row
   ScrollTrigger.create({
     trigger: statsGrid,
     start: 'top 85%',
     once: true,
     onEnter: () => {
-      // 1. Stagger in the stat item cards
+      // 1. Stagger in stat item containers
       gsap.fromTo(
         statItems,
-        { y: 28, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' }
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.75, stagger: 0.1, ease: 'power3.out' }
       );
 
       // 2. Number counting tween for each stat value
@@ -220,7 +177,7 @@ function initAboutStatsCounter(aboutElement) {
 
         gsap.to(countObj, {
           current: targetNumber,
-          duration: 2.2,
+          duration: 2.0,
           ease: 'power2.out',
           onUpdate: () => {
             valEl.textContent = Math.round(countObj.current);

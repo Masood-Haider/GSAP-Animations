@@ -465,10 +465,14 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding: var(--space-md) 0;
+  z-index: 2;
+  min-height: 52px;
+  padding: var(--space-sm) 0;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
 }
 
 .marquee-track {

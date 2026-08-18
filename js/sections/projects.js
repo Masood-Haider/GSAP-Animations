@@ -1,6 +1,6 @@
 /**
- * Projects Section Animation Module with GSAP Flip Category Filtering
- * Implements category filtering with GSAP Flip, horizontal gallery on desktop,
+ * Projects Section Animation Module with Audited ScrollTrigger Timing & GSAP Flip
+ * Implements measured horizontal gallery scroll with full start/end visibility,
  * center-focus card scaling, card hover micro-animations, and responsive layout.
  */
 
@@ -27,7 +27,7 @@ export function initProjects() {
   // 5. Setup GSAP Flip Category Filtering
   initProjectsFiltering(projectsSection);
 
-  console.info('[Section] Projects animations with GSAP Flip initialized.');
+  console.info('[Section] Projects animations initialized with audited ScrollTrigger timing.');
 }
 
 /**
@@ -86,7 +86,7 @@ function renderProjectCards(projectsSection) {
                 <span class="project-hover-pill">
                   <span>View Architecture</span>
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </span>
               </div>
@@ -140,28 +140,19 @@ function initProjectsFiltering(projectsSection) {
         b.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
       });
 
-      // Execute Flip Animation if Flip plugin is available
       if (typeof Flip !== 'undefined') {
-        // 1. Record current state of all project cards
         const state = Flip.getState(allCards, {
           props: 'opacity,transform',
         });
 
-        // 2. Mutate DOM / Visibility
         allCards.forEach((card) => {
           const cardCat = card.getAttribute('data-category');
           const shouldShow = selectedSlug === 'all' || cardCat === selectedSlug;
-
-          if (shouldShow) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
+          card.style.display = shouldShow ? 'flex' : 'none';
         });
 
-        // 3. Animate smoothly from recorded state to new layout
         Flip.from(state, {
-          duration: 0.55,
+          duration: 0.5,
           ease: 'power2.inOut',
           scale: true,
           fade: true,
@@ -169,25 +160,23 @@ function initProjectsFiltering(projectsSection) {
           onEnter: (elements) =>
             gsap.fromTo(
               elements,
-              { opacity: 0, scale: 0.85 },
-              { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }
+              { opacity: 0, scale: 0.88 },
+              { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }
             ),
           onLeave: (elements) =>
             gsap.to(elements, {
               opacity: 0,
-              scale: 0.85,
-              duration: 0.35,
+              scale: 0.88,
+              duration: 0.3,
               ease: 'power2.in',
             }),
           onComplete: () => {
-            // Recalculate ScrollTrigger scrollWidth and distances
             if (typeof ScrollTrigger !== 'undefined') {
               ScrollTrigger.refresh();
             }
           },
         });
       } else {
-        // Graceful fallback without Flip
         allCards.forEach((card) => {
           const cardCat = card.getAttribute('data-category');
           const shouldShow = selectedSlug === 'all' || cardCat === selectedSlug;
@@ -202,7 +191,7 @@ function initProjectsFiltering(projectsSection) {
 }
 
 /**
- * Setup GSAP Horizontal Scroll Gallery with ScrollTrigger & matchMedia
+ * Setup GSAP Horizontal Scroll Gallery with Audited Measured ScrollTrigger Timing
  */
 function initProjectsScrollAnimation(projectsSection) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -215,9 +204,9 @@ function initProjectsScrollAnimation(projectsSection) {
 
   // Desktop & Large Screens (>= 1025px): Horizontal Scroll Gallery
   mm.add('(min-width: 1025px)', () => {
-    // Calculate dynamic horizontal distance based on visible cards
+    // Accurately compute real horizontal scroll distance from live DOM width
     const getScrollDistance = () => {
-      const distance = projectsTrack.scrollWidth - window.innerWidth + 140;
+      const distance = projectsTrack.scrollWidth - window.innerWidth + 80;
       return Math.max(0, distance);
     };
 
@@ -229,21 +218,22 @@ function initProjectsScrollAnimation(projectsSection) {
         trigger: projectsSection,
         pin: true,
         start: 'top top',
-        end: () => `+=${getScrollDistance() + 600}`,
+        end: () => `+=${getScrollDistance() + Math.max(window.innerHeight * 0.45, 350)}`,
         scrub: 1,
         invalidateOnRefresh: true,
         anticipatePin: 1,
       },
     });
 
-    // Card Focus Animation: Scale & Opacity when entering center view
+    // Card Focus Animation tied to containerAnimation
     projectCards.forEach((card, i) => {
-      const initialOpacity = i === 0 ? 1 : 0.45;
-      const initialScale = i === 0 ? 1 : 0.88;
+      // First card starts focused; other cards start slightly scaled down
+      const isFirst = i === 0;
+      const isLast = i === projectCards.length - 1;
 
       gsap.fromTo(
         card,
-        { scale: initialScale, opacity: initialOpacity },
+        { scale: isFirst ? 1 : 0.9, opacity: isFirst ? 1 : 0.5 },
         {
           scale: 1,
           opacity: 1,
@@ -252,14 +242,15 @@ function initProjectsScrollAnimation(projectsSection) {
           scrollTrigger: {
             trigger: card,
             containerAnimation: horizontalTween,
-            start: 'left 80%',
+            start: 'left 88%',
             end: 'center 50%',
             scrub: 0.5,
           },
         }
       );
 
-      if (i < projectCards.length - 1) {
+      // Cards scale down as they scroll past to the left, EXCEPT the last card which stays in view
+      if (!isLast) {
         gsap.to(card, {
           scale: 0.9,
           opacity: 0.5,
@@ -267,7 +258,7 @@ function initProjectsScrollAnimation(projectsSection) {
           scrollTrigger: {
             trigger: card,
             containerAnimation: horizontalTween,
-            start: 'center 40%',
+            start: 'center 45%',
             end: 'right 10%',
             scrub: 0.5,
           },
@@ -276,25 +267,26 @@ function initProjectsScrollAnimation(projectsSection) {
     });
   });
 
-  // Mobile & Tablet (< 1025px): Vertical Grid with Standard Scroll Trigger
+  // Mobile & Tablet (< 1025px): Vertical Grid with Individual Card ScrollTriggers
   mm.add('(max-width: 1024px)', () => {
-    gsap.fromTo(
-      projectCards,
-      { y: 40, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.15,
-        duration: 0.85,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: projectsSection,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-          once: true,
-        },
-      }
-    );
+    projectCards.forEach((card) => {
+      gsap.fromTo(
+        card,
+        { y: 35, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+            once: true,
+          },
+        }
+      );
+    });
   });
 }
 
@@ -313,7 +305,6 @@ function initProjectsHoverEffects(projectsSection) {
 
     if (!overlay || !pill) return;
 
-    // Set initial positions
     gsap.set(overlay, { yPercent: 100, opacity: 0 });
     gsap.set(pill, { y: 15, opacity: 0 });
 
@@ -321,7 +312,7 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(overlay, {
         yPercent: 0,
         opacity: 1,
-        duration: 0.38,
+        duration: 0.35,
         ease: 'power3.out',
         overwrite: 'auto',
       });
@@ -329,8 +320,8 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(pill, {
         y: 0,
         opacity: 1,
-        duration: 0.32,
-        delay: 0.06,
+        duration: 0.28,
+        delay: 0.05,
         ease: 'power2.out',
         overwrite: 'auto',
       });
@@ -339,7 +330,7 @@ function initProjectsHoverEffects(projectsSection) {
         gsap.to(shape, {
           scale: 1.25,
           filter: 'blur(28px)',
-          duration: 0.5,
+          duration: 0.45,
           ease: 'power2.out',
           overwrite: 'auto',
         });
@@ -350,7 +341,7 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(overlay, {
         yPercent: 100,
         opacity: 0,
-        duration: 0.3,
+        duration: 0.28,
         ease: 'power2.in',
         overwrite: 'auto',
       });
@@ -358,7 +349,7 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(pill, {
         y: 15,
         opacity: 0,
-        duration: 0.22,
+        duration: 0.2,
         ease: 'power2.in',
         overwrite: 'auto',
       });
@@ -367,7 +358,7 @@ function initProjectsHoverEffects(projectsSection) {
         gsap.to(shape, {
           scale: 1,
           filter: 'blur(40px)',
-          duration: 0.5,
+          duration: 0.45,
           ease: 'power2.out',
           overwrite: 'auto',
         });

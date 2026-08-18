@@ -294,12 +294,22 @@ export function initScrollTriggerRefresh() {
     });
   }
 
+  // Refresh on full window load (images, CSS, sub-resources)
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+  });
+
+  // Short timeout refresh to catch late DOM layout shifts
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 350);
+
   // Debounced resize handler
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 200);
+    }, 150);
   });
 }

@@ -1,7 +1,7 @@
 /**
  * Hero Section Animation Module
- * Implements SplitText character reveal, sequential timeline entrance,
- * infinite looping background ambient shape, and continuous marquee scrolling.
+ * Autoplays on page load: SplitText character reveal on heading, sequential fade-in
+ * of subheading, CTA button, infinite marquee ticker, and subtle looping background shapes.
  */
 
 import { portfolioData } from '../data.js';
@@ -16,13 +16,13 @@ export function initHero() {
   // 1. Setup & Animate the Infinite Marquee Ticker
   initHeroMarquee(heroElement);
 
-  // 2. Setup Subtle Infinite Looping Ambient Background Shapes
+  // 2. Setup Subtle Infinite Looping Ambient Background Shapes (Yoyo)
   initHeroBackgroundLoop(heroElement);
 
-  // 3. Main Entrance Timeline: SplitText Character Reveal + Subheading + CTAs
+  // 3. Main Entrance Timeline: Autoplays immediately on page load
   initHeroEntranceTimeline(heroElement);
 
-  console.info('[Section] Hero animations initialized.');
+  console.info('[Section] Hero animations initialized (Autoplay on page load).');
 }
 
 /**
@@ -30,10 +30,13 @@ export function initHero() {
  */
 function initHeroMarquee(heroElement) {
   const marqueeTrack = heroElement.querySelector('.marquee-track');
+  const marqueeContainer = heroElement.querySelector('.marquee-container');
   if (!marqueeTrack || !portfolioData.marqueeItems) return;
 
-  // Repeat items 4 times to ensure uninterrupted loop on ultra-wide screens
+  // Repeat items 6 times to ensure seamless infinite loop across all monitor widths
   const items = [
+    ...portfolioData.marqueeItems,
+    ...portfolioData.marqueeItems,
     ...portfolioData.marqueeItems,
     ...portfolioData.marqueeItems,
     ...portfolioData.marqueeItems,
@@ -52,22 +55,20 @@ function initHeroMarquee(heroElement) {
     .join('');
 
   if (typeof gsap !== 'undefined') {
-    // Seamless horizontal loop with constant velocity
+    // Seamless horizontal marquee loop with constant velocity
     const marqueeTween = gsap.to(marqueeTrack, {
       xPercent: -50,
       repeat: -1,
-      duration: 28,
+      duration: 25,
       ease: 'none',
     });
 
-    // Optional subtle deceleration on hover
-    const marqueeContainer = heroElement.querySelector('.marquee-container');
     if (marqueeContainer) {
       marqueeContainer.addEventListener('mouseenter', () => {
-        gsap.to(marqueeTween, { timeScale: 0.5, duration: 0.8, ease: 'power1.out' });
+        gsap.to(marqueeTween, { timeScale: 0.4, duration: 0.5, ease: 'power1.out' });
       });
       marqueeContainer.addEventListener('mouseleave', () => {
-        gsap.to(marqueeTween, { timeScale: 1, duration: 0.8, ease: 'power1.out' });
+        gsap.to(marqueeTween, { timeScale: 1, duration: 0.5, ease: 'power1.out' });
       });
     }
   }
@@ -83,28 +84,28 @@ function initHeroBackgroundLoop(heroElement) {
   const orb1 = heroElement.querySelector('.hero-glow-orb-1');
   const orb2 = heroElement.querySelector('.hero-glow-orb-2');
 
-  // Floating & morphing SVG blob
+  // Floating SVG blob (infinite yoyo loop)
   if (ambientBlob) {
     gsap.to(ambientBlob, {
-      x: 35,
-      y: -30,
-      rotation: 14,
-      scale: 1.08,
-      duration: 8,
+      x: 30,
+      y: -25,
+      rotation: 12,
+      scale: 1.06,
+      duration: 7.5,
       ease: 'sine.inOut',
       repeat: -1,
       yoyo: true,
     });
   }
 
-  // Smooth ambient purple glow orbs floating
+  // Floating purple glow orbs
   if (orb1) {
     gsap.to(orb1, {
-      x: 45,
-      y: -40,
-      scale: 1.15,
-      opacity: 0.9,
-      duration: 10,
+      x: 40,
+      y: -35,
+      scale: 1.12,
+      opacity: 0.85,
+      duration: 9,
       ease: 'sine.inOut',
       repeat: -1,
       yoyo: true,
@@ -113,11 +114,11 @@ function initHeroBackgroundLoop(heroElement) {
 
   if (orb2) {
     gsap.to(orb2, {
-      x: -40,
-      y: 45,
-      scale: 1.2,
-      opacity: 0.7,
-      duration: 12,
+      x: -35,
+      y: 40,
+      scale: 1.15,
+      opacity: 0.65,
+      duration: 11,
       ease: 'sine.inOut',
       repeat: -1,
       yoyo: true,
@@ -126,7 +127,7 @@ function initHeroBackgroundLoop(heroElement) {
 }
 
 /**
- * Entrance animation using SplitText and a single unified GSAP Timeline
+ * Hero Entrance Master Timeline (Autoplays on page load with offsets)
  */
 function initHeroEntranceTimeline(heroElement) {
   if (typeof gsap === 'undefined') return;
@@ -136,10 +137,10 @@ function initHeroEntranceTimeline(heroElement) {
   const ctaButtons = heroElement.querySelectorAll('.hero-cta-group .btn');
   const marqueeContainer = heroElement.querySelector('.marquee-container');
 
-  // Master Entrance Timeline
-  const tl = gsap.timeline({
+  // Master Entrance Timeline (No ScrollTrigger - plays immediately on load)
+  const masterTl = gsap.timeline({
+    delay: 0.08,
     defaults: { ease: 'power3.out' },
-    delay: 0.15,
   });
 
   let chars = null;
@@ -154,64 +155,62 @@ function initHeroEntranceTimeline(heroElement) {
       });
       chars = split.chars;
     } catch (e) {
-      console.warn('[Hero] SplitText failed, falling back:', e);
+      console.warn('[Hero] SplitText initialization notice:', e);
     }
   }
 
-  // 1. Heading Reveal (Character stagger or fallback)
+  // 1. Heading Character Reveal
   if (chars && chars.length > 0) {
-    tl.fromTo(
+    masterTl.fromTo(
       chars,
       {
         yPercent: 110,
         opacity: 0,
         skewY: 6,
-        rotateZ: 2,
       },
       {
         yPercent: 0,
         opacity: 1,
         skewY: 0,
-        rotateZ: 0,
-        duration: 0.95,
-        stagger: 0.02,
+        duration: 0.85,
+        stagger: 0.018,
         ease: 'power3.out',
       }
     );
   } else if (titleElement) {
-    tl.fromTo(
+    masterTl.fromTo(
       titleElement,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
+      { y: 35, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }
     );
   }
 
-  // 2. Subheading animation shortly before heading finishes
+  // 2. Subheading fading & lifting up shortly after heading starts
   if (subtitle) {
-    tl.fromTo(
+    masterTl.fromTo(
       subtitle,
-      { y: 35, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' },
+      { y: 25, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' },
       '-=0.45'
     );
   }
 
   // 3. CTA Buttons staggered entrance
   if (ctaButtons && ctaButtons.length > 0) {
-    tl.fromTo(
+    masterTl.fromTo(
       ctaButtons,
-      { y: 25, opacity: 0, scale: 0.96 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power2.out' },
+      { y: 20, opacity: 0, scale: 0.95 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' },
       '-=0.4'
     );
   }
 
   // 4. Marquee Container smooth fade-in
   if (marqueeContainer) {
-    tl.fromTo(
+    masterTl.fromTo(
       marqueeContainer,
-      { opacity: 0, y: 25 },
-      { opacity: 1, y: 0, duration: 0.85, ease: 'power2.out' },
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
       '-=0.35'
     );
   }
