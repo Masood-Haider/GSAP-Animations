@@ -13,7 +13,7 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   background-color: var(--bg-primary);
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
 /* Selection */
 ::selection {
   background: var(--accent-primary);
-  color: #ffffff;
+  color: #121110;
 }
 
 /* Custom Scrollbar */
@@ -134,22 +134,17 @@ img, svg {
   overflow: hidden;
 }
 
-/* ScrollSmoother Required Shell */
+/* Standard Document Wrappers (No transform to preserve position:fixed pinning) */
 #smooth-wrapper {
-  overflow: hidden;
-  position: fixed;
-  height: 100%;
+  position: relative;
   width: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  overflow: visible;
 }
 
 #smooth-content {
-  overflow: visible;
+  position: relative;
   width: 100%;
-  min-height: 100vh;
+  overflow: visible;
 }
 
 /* Utility Helpers */
@@ -166,15 +161,18 @@ img, svg {
 }
 
 .text-gradient {
-  color: var(--accent-primary) !important;
-  -webkit-text-fill-color: var(--accent-primary) !important;
+  background: linear-gradient(135deg, #E88B6E 0%, #D97757 45%, #DFC59B 85%, #C9A876 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
   display: inline;
 }
 
 .text-gradient * {
-  color: var(--accent-primary) !important;
-  -webkit-text-fill-color: var(--accent-primary) !important;
-  background: none !important;
+  background: inherit !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
 }
 
 .text-accent {

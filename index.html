@@ -15,12 +15,13 @@
   <link rel="stylesheet" href="./css/style.css" />
 
   <!-- GSAP Core & Standard Plugins (Free in standard GSAP distribution) -->
-  <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/gsap/dist/ScrollSmoother.min.js"></script>
-  <script src="https://unpkg.com/gsap/dist/ScrollToPlugin.min.js"></script>
-  <script src="https://unpkg.com/gsap/dist/SplitText.min.js"></script>
-  <script src="https://unpkg.com/gsap/dist/Flip.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/Flip.min.js"></script>
+
+  <!-- Three.js (WebGL 3D Interactive Graphics) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
@@ -126,34 +127,87 @@
 
       <!-- 1. Hero Section -->
       <section id="hero" class="section hero-section" aria-labelledby="hero-title">
-        <!-- Abstract Background Shapes & Grid (Black & Purple Palette) -->
-        <div class="hero-bg-shapes" aria-hidden="true">
+        <!-- Inverted Mountain-Ridge Vector Background (Top 30% Canopy) -->
+        <div class="hero-ridge-bg" aria-hidden="true">
           <div class="hero-grid-pattern"></div>
-          <div class="hero-glow-orb-1"></div>
-          <div class="hero-glow-orb-2"></div>
-          <div class="hero-ambient-blob">
-            <svg viewBox="0 0 600 600" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="heroBlobGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#D97757" stop-opacity="0.45"/>
-                  <stop offset="50%" stop-color="#E88C6E" stop-opacity="0.25"/>
-                  <stop offset="100%" stop-color="#C9A876" stop-opacity="0.08"/>
-                </linearGradient>
-                <linearGradient id="heroRingGrad" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#D97757" stop-opacity="0.55"/>
-                  <stop offset="100%" stop-color="#C9A876" stop-opacity="0.15"/>
-                </linearGradient>
-              </defs>
-              <circle cx="300" cy="300" r="230" stroke="url(#heroRingGrad)" stroke-width="1.5" stroke-dasharray="8 8" />
-              <circle cx="300" cy="300" r="170" stroke="url(#heroRingGrad)" stroke-width="1" />
-              <path d="M300,100 C410,100 500,190 500,300 C500,410 410,500 300,500 C190,500 100,410 100,300 C100,190 190,100 300,100 Z" fill="url(#heroBlobGrad)" filter="blur(30px)" />
-            </svg>
-          </div>
+          <svg class="hero-ridge-svg" viewBox="0 0 1440 300" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Soft Atmospheric Top Glow Filter -->
+              <filter id="ridgeSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+              </filter>
+
+              <!-- Radial Atmosphere Glow from Top Edge -->
+              <radialGradient id="ridgeTopAtmosphere" cx="50%" cy="0%" r="70%">
+                <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.32"/>
+                <stop offset="50%" stop-color="var(--accent-primary)" stop-opacity="0.10"/>
+                <stop offset="100%" stop-color="var(--bg-primary)" stop-opacity="0"/>
+              </radialGradient>
+
+              <!-- Layer 1 Gradient (Deepest Background / Farthest) -->
+              <linearGradient id="ridgeGradLayer1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.09"/>
+                <stop offset="60%" stop-color="var(--bg-card)" stop-opacity="0.03"/>
+                <stop offset="100%" stop-color="var(--bg-primary)" stop-opacity="0.01"/>
+              </linearGradient>
+
+              <!-- Layer 2 Gradient (Mid-Background) -->
+              <linearGradient id="ridgeGradLayer2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.16"/>
+                <stop offset="60%" stop-color="var(--accent-primary)" stop-opacity="0.06"/>
+                <stop offset="100%" stop-color="var(--bg-primary)" stop-opacity="0.02"/>
+              </linearGradient>
+
+              <!-- Layer 3 Gradient (Mid-Foreground) -->
+              <linearGradient id="ridgeGradLayer3" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-primary-hover)" stop-opacity="0.24"/>
+                <stop offset="65%" stop-color="var(--accent-primary)" stop-opacity="0.10"/>
+                <stop offset="100%" stop-color="var(--bg-primary)" stop-opacity="0.03"/>
+              </linearGradient>
+
+              <!-- Layer 4 Gradient (Nearest Foreground / Highest Opacity) -->
+              <linearGradient id="ridgeGradLayer4" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-primary-hover)" stop-opacity="0.34"/>
+                <stop offset="55%" stop-color="var(--accent-primary)" stop-opacity="0.18"/>
+                <stop offset="90%" stop-color="var(--accent-primary)" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="var(--bg-primary)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Top Ambient Atmospheric Glow -->
+            <g id="ridge-glow-layer" class="ridge-glow-group">
+              <rect x="0" y="0" width="1440" height="220" fill="url(#ridgeTopAtmosphere)" />
+              <ellipse cx="720" cy="0" rx="550" ry="110" fill="var(--accent-primary)" fill-opacity="0.15" filter="url(#ridgeSoftGlow)" />
+            </g>
+
+            <!-- Layer 1: Deepest Inverted Ridge Peaks (Farthest back) -->
+            <g id="ridge-layer-1" class="ridge-layer">
+              <path d="M0,0 L1440,0 L1440,80 L1370,110 L1300,75 L1210,125 L1130,90 L1030,135 L950,95 L860,140 L770,85 L680,130 L590,80 L500,135 L410,90 L320,140 L230,95 L140,130 L60,85 L0,115 Z" fill="url(#ridgeGradLayer1)" stroke="var(--border-subtle)" stroke-width="1" stroke-opacity="0.35" />
+            </g>
+
+            <!-- Layer 2: Mid-Back Inverted Ridge Peaks -->
+            <g id="ridge-layer-2" class="ridge-layer">
+              <path d="M0,0 L1440,0 L1440,110 L1355,155 L1270,105 L1180,175 L1090,115 L1000,185 L910,120 L825,190 L740,110 L655,170 L570,105 L475,180 L380,115 L290,185 L195,120 L110,175 L0,135 Z" fill="url(#ridgeGradLayer2)" stroke="var(--border-medium)" stroke-width="1" stroke-opacity="0.45" />
+            </g>
+
+            <!-- Layer 3: Mid-Foreground Inverted Ridge Peaks -->
+            <g id="ridge-layer-3" class="ridge-layer">
+              <path d="M0,0 L1440,0 L1440,135 L1345,205 L1260,135 L1165,225 L1070,145 L975,220 L885,140 L785,230 L695,135 L605,210 L515,130 L415,220 L325,140 L235,215 L145,145 L65,200 L0,150 Z" fill="url(#ridgeGradLayer3)" stroke="var(--accent-primary)" stroke-width="1.25" stroke-opacity="0.35" />
+            </g>
+
+            <!-- Layer 4: Foreground Inverted Ridge Peaks (Sharpest & Nearest) -->
+            <g id="ridge-layer-4" class="ridge-layer">
+              <path d="M0,0 L1440,0 L1440,165 L1335,255 L1240,170 L1135,265 L1035,165 L935,260 L845,160 L745,270 L645,165 L545,255 L445,155 L345,260 L255,170 L155,250 L70,180 L0,185 Z" fill="url(#ridgeGradLayer4)" stroke="var(--accent-primary-hover)" stroke-width="1.5" stroke-opacity="0.75" />
+            </g>
+          </svg>
         </div>
 
-        <div class="container">
+        <!-- Full-Bleed 3D WebGL Background Canvas (Starfield & Right-Side 3D Holographic Core) -->
+        <canvas id="hero-3d-canvas" class="hero-3d-bg-canvas" aria-hidden="true"></canvas>
+
+        <div class="container hero-container">
           <div class="hero-content">
-            <h1 id="hero-title" class="hero-headline">Engineering <span class="text-gradient">full-stack systems</span> &amp; motion precision.</h1>
+            <h1 id="hero-title" class="hero-headline">Engineering <span class="text-gradient">full-stack&nbsp;systems</span> &amp; motion precision.</h1>
 
             <p class="hero-subheadline">
               Computer Science student &amp; Full Stack Developer crafting resilient web platforms, backend architectures, and fluid interactive user experiences.
@@ -214,6 +268,25 @@
             </div>
           </div>
 
+          <!-- Education & Journey Overlapping Stack Section -->
+          <div class="about-journey-section" id="about-journey-section">
+            <div class="about-journey-header">
+              <div class="section-badge">
+                <span class="badge-dot"></span>
+                <span>Academic &amp; Technical Foundation</span>
+              </div>
+              <h3 class="about-journey-title">Education &amp; Engineering Milestones</h3>
+              <p class="about-journey-subtitle">Scroll down to explore my academic path and technical progression.</p>
+            </div>
+
+            <!-- Overlapping Cards Pin Deck -->
+            <div class="about-deck-wrapper" id="about-deck-wrapper">
+              <div class="about-cards-stack" id="about-cards-stack">
+                <!-- Dynamically populated and animated by about.js -->
+              </div>
+            </div>
+          </div>
+
           <!-- Space reserved for Stats Row -->
           <div class="stats-grid" id="about-stats-grid">
             <!-- Dynamically populated by about.js -->
@@ -236,14 +309,278 @@
 
             <!-- Category Filter Buttons Bar (Animated with GSAP Flip) -->
             <div class="projects-filter-bar" id="projects-filter-bar" role="tablist" aria-label="Filter Projects by Category">
-              <!-- Dynamically populated by projects.js -->
+              <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
+                <span>All Projects</span>
+                <span class="filter-btn-count">6</span>
+              </button>
+              <button class="filter-btn" data-filter="fullstack" role="tab" aria-selected="false">
+                <span>Full Stack</span>
+                <span class="filter-btn-count">2</span>
+              </button>
+              <button class="filter-btn" data-filter="systems" role="tab" aria-selected="false">
+                <span>Systems &amp; CS</span>
+                <span class="filter-btn-count">2</span>
+              </button>
+              <button class="filter-btn" data-filter="motion" role="tab" aria-selected="false">
+                <span>Creative Motion</span>
+                <span class="filter-btn-count">2</span>
+              </button>
             </div>
           </div>
 
           <!-- Horizontal Track (switches to vertical grid on mobile) -->
           <div class="projects-track-wrapper">
             <div class="projects-track" id="projects-track">
-              <!-- Dynamically populated by projects.js -->
+              <!-- Project 1 -->
+              <article class="card project-card" data-project-id="nexus-stack" data-category="fullstack">
+                <div class="project-card-image-wrap">
+                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Nexus Full Stack Platform">
+                    <div class="abstract-shape-mesh"></div>
+                    <div class="abstract-graphic">
+                      <div class="abstract-shape-circle" style="background: var(--grad-1);"></div>
+                    </div>
+                    <span class="abstract-badge">01 // 2026</span>
+                    <div class="project-hover-overlay">
+                      <span class="project-hover-pill">
+                        <span>Explore</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-meta">
+                  <span class="project-category">Full Stack &amp; Cloud</span>
+                  <span class="project-year">2026</span>
+                </div>
+                <h3 class="project-title">Nexus Full Stack Platform</h3>
+                <p class="project-description">A distributed web platform with real-time collaboration, microservices architecture, and WebSocket data streams.</p>
+                <div class="project-tags">
+                  <span class="project-tag">Node.js</span>
+                  <span class="project-tag">React</span>
+                  <span class="project-tag">PostgreSQL</span>
+                  <span class="project-tag">WebSockets</span>
+                  <span class="project-tag">GSAP</span>
+                </div>
+                <div class="project-link-row">
+                  <a href="#" class="project-link" aria-label="View live project Nexus Full Stack Platform">
+                    <span>View Case</span>
+                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+
+              <!-- Project 2 -->
+              <article class="card project-card" data-project-id="algo-visualizer" data-category="systems">
+                <div class="project-card-image-wrap">
+                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Algorithmic Motion Lab">
+                    <div class="abstract-shape-mesh"></div>
+                    <div class="abstract-graphic">
+                      <div class="abstract-shape-circle" style="background: var(--grad-2);"></div>
+                    </div>
+                    <span class="abstract-badge">02 // 2025</span>
+                    <div class="project-hover-overlay">
+                      <span class="project-hover-pill">
+                        <span>Explore</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-meta">
+                  <span class="project-category">Computer Science &amp; Visuals</span>
+                  <span class="project-year">2025</span>
+                </div>
+                <h3 class="project-title">Algorithmic Motion Lab</h3>
+                <p class="project-description">An interactive algorithm visualizer demonstrating graph traversals, dynamic programming, and tree balancing with smooth state transitions.</p>
+                <div class="project-tags">
+                  <span class="project-tag">Vanilla JS</span>
+                  <span class="project-tag">Data Structures</span>
+                  <span class="project-tag">GSAP</span>
+                  <span class="project-tag">Canvas 2D</span>
+                </div>
+                <div class="project-link-row">
+                  <a href="#" class="project-link" aria-label="View live project Algorithmic Motion Lab">
+                    <span>View Case</span>
+                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+
+              <!-- Project 3 -->
+              <article class="card project-card" data-project-id="hyper-commerce" data-category="fullstack">
+                <div class="project-card-image-wrap">
+                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Hyper E-Commerce Engine">
+                    <div class="abstract-shape-mesh"></div>
+                    <div class="abstract-graphic">
+                      <div class="abstract-shape-circle" style="background: var(--grad-3);"></div>
+                    </div>
+                    <span class="abstract-badge">03 // 2025</span>
+                    <div class="project-hover-overlay">
+                      <span class="project-hover-pill">
+                        <span>Explore</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-meta">
+                  <span class="project-category">Full Stack Application</span>
+                  <span class="project-year">2025</span>
+                </div>
+                <h3 class="project-title">Hyper E-Commerce Engine</h3>
+                <p class="project-description">High-speed headless e-commerce store with serverless backend, optimized cart state management, and fluid checkout animations.</p>
+                <div class="project-tags">
+                  <span class="project-tag">TypeScript</span>
+                  <span class="project-tag">Express</span>
+                  <span class="project-tag">MongoDB</span>
+                  <span class="project-tag">Stripe API</span>
+                  <span class="project-tag">Tailwind</span>
+                </div>
+                <div class="project-link-row">
+                  <a href="#" class="project-link" aria-label="View live project Hyper E-Commerce Engine">
+                    <span>View Case</span>
+                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+
+              <!-- Project 4 -->
+              <article class="card project-card" data-project-id="zenith-dashboard" data-category="motion">
+                <div class="project-card-image-wrap">
+                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Zenith Analytics Suite">
+                    <div class="abstract-shape-mesh"></div>
+                    <div class="abstract-graphic">
+                      <div class="abstract-shape-circle" style="background: var(--grad-4);"></div>
+                    </div>
+                    <span class="abstract-badge">04 // 2025</span>
+                    <div class="project-hover-overlay">
+                      <span class="project-hover-pill">
+                        <span>Explore</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-meta">
+                  <span class="project-category">Motion &amp; Systems</span>
+                  <span class="project-year">2025</span>
+                </div>
+                <h3 class="project-title">Zenith Analytics Suite</h3>
+                <p class="project-description">Real-time enterprise metrics dashboard with high-throughput streaming charts and interactive data filtering.</p>
+                <div class="project-tags">
+                  <span class="project-tag">React</span>
+                  <span class="project-tag">D3.js</span>
+                  <span class="project-tag">GSAP</span>
+                  <span class="project-tag">Node.js</span>
+                  <span class="project-tag">Tailwind</span>
+                </div>
+                <div class="project-link-row">
+                  <a href="#" class="project-link" aria-label="View live project Zenith Analytics Suite">
+                    <span>View Case</span>
+                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+
+              <!-- Project 5 -->
+              <article class="card project-card" data-project-id="lumina-gateway" data-category="systems">
+                <div class="project-card-image-wrap">
+                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Lumina API Gateway">
+                    <div class="abstract-shape-mesh"></div>
+                    <div class="abstract-graphic">
+                      <div class="abstract-shape-circle" style="background: var(--grad-5);"></div>
+                    </div>
+                    <span class="abstract-badge">05 // 2024</span>
+                    <div class="project-hover-overlay">
+                      <span class="project-hover-pill">
+                        <span>Explore</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-meta">
+                  <span class="project-category">Distributed Systems</span>
+                  <span class="project-year">2024</span>
+                </div>
+                <h3 class="project-title">Lumina API Gateway</h3>
+                <p class="project-description">Sub-millisecond rate-limiting and reverse proxy service built with Go and Redis for microservice backends.</p>
+                <div class="project-tags">
+                  <span class="project-tag">Go</span>
+                  <span class="project-tag">Redis</span>
+                  <span class="project-tag">Docker</span>
+                  <span class="project-tag">Microservices</span>
+                  <span class="project-tag">REST</span>
+                </div>
+                <div class="project-link-row">
+                  <a href="#" class="project-link" aria-label="View live project Lumina API Gateway">
+                    <span>View Case</span>
+                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+
+              <!-- Project 6 -->
+              <article class="card project-card" data-project-id="vortex-motion" data-category="motion">
+                <div class="project-card-image-wrap">
+                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Vortex Creative Engine">
+                    <div class="abstract-shape-mesh"></div>
+                    <div class="abstract-graphic">
+                      <div class="abstract-shape-circle" style="background: var(--grad-6);"></div>
+                    </div>
+                    <span class="abstract-badge">06 // 2024</span>
+                    <div class="project-hover-overlay">
+                      <span class="project-hover-pill">
+                        <span>Explore</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-card-meta">
+                  <span class="project-category">Creative WebGL</span>
+                  <span class="project-year">2024</span>
+                </div>
+                <h3 class="project-title">Vortex Creative Engine</h3>
+                <p class="project-description">GPU-accelerated interactive particle system with custom GLSL shaders and responsive cursor physics.</p>
+                <div class="project-tags">
+                  <span class="project-tag">WebGL</span>
+                  <span class="project-tag">Three.js</span>
+                  <span class="project-tag">GSAP</span>
+                  <span class="project-tag">Shader GLSL</span>
+                  <span class="project-tag">Canvas</span>
+                </div>
+                <div class="project-link-row">
+                  <a href="#" class="project-link" aria-label="View live project Vortex Creative Engine">
+                    <span>View Case</span>
+                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
             </div>
           </div>
         </div>

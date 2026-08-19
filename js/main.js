@@ -1,5 +1,5 @@
 /**
- * Main Application Entry Point
+ * Main Application Entry Point (Performance-Optimized)
  * Orchestrates navigation, custom cursor, smooth scrolling, GSAP timelines, and section initializations.
  */
 
@@ -18,7 +18,7 @@ import { initSkills } from './sections/skills.js';
 import { initContact } from './sections/contact.js';
 
 /**
- * 1. Custom Mouse Cursor using GSAP quickTo & Interactive Hover Scaling
+ * 1. Custom Mouse Cursor using GSAP quickTo & State-Guarded Hover
  */
 function initCustomCursor() {
   const dot = document.querySelector('#cursor-dot');
@@ -31,71 +31,77 @@ function initCustomCursor() {
 
   if (typeof gsap === 'undefined') return;
 
-  // Setup quickTo setters for ultra-low latency & buttery smooth interpolation
-  const setDotX = gsap.quickTo(dot, 'x', { duration: 0.08, ease: 'power3' });
-  const setDotY = gsap.quickTo(dot, 'y', { duration: 0.08, ease: 'power3' });
-  const setFollowerX = gsap.quickTo(follower, 'x', { duration: 0.32, ease: 'power3' });
-  const setFollowerY = gsap.quickTo(follower, 'y', { duration: 0.32, ease: 'power3' });
+  // Ultra-fast, GPU-based quickTo setters
+  const setDotX = gsap.quickTo(dot, 'x', { duration: 0.05, ease: 'power2.out' });
+  const setDotY = gsap.quickTo(dot, 'y', { duration: 0.05, ease: 'power2.out' });
+  const setFollowerX = gsap.quickTo(follower, 'x', { duration: 0.18, ease: 'power2.out' });
+  const setFollowerY = gsap.quickTo(follower, 'y', { duration: 0.18, ease: 'power2.out' });
 
   let cursorVisible = false;
+  let isHovered = false;
 
   window.addEventListener('mousemove', (e) => {
     if (!cursorVisible) {
       cursorVisible = true;
-      gsap.to([dot, follower], { opacity: 1, duration: 0.25 });
+      gsap.to([dot, follower], { opacity: 1, duration: 0.2, overwrite: 'auto' });
     }
     setDotX(e.clientX);
     setDotY(e.clientY);
     setFollowerX(e.clientX);
     setFollowerY(e.clientY);
-  });
+  }, { passive: true });
 
   document.addEventListener('mouseleave', () => {
     cursorVisible = false;
-    gsap.to([dot, follower], { opacity: 0, duration: 0.25 });
+    gsap.to([dot, follower], { opacity: 0, duration: 0.2, overwrite: 'auto' });
   });
 
   document.addEventListener('mouseenter', () => {
     cursorVisible = true;
-    gsap.to([dot, follower], { opacity: 1, duration: 0.25 });
+    gsap.to([dot, follower], { opacity: 1, duration: 0.2, overwrite: 'auto' });
   });
 
-  // Scale up cursor on interactive elements
+  // State-guarded interactive element scaling (fires only when hover state actually changes)
   const interactiveSelectors = 'a, button, .project-card, .tag-pill, .filter-btn, .email-copy-pill, .social-link-btn, [role="tab"]';
   
   document.addEventListener('mouseover', (e) => {
     const target = e.target.closest(interactiveSelectors);
-    if (target) {
+    if (target && !isHovered) {
+      isHovered = true;
       gsap.to(follower, {
-        scale: 2.2,
-        backgroundColor: 'rgba(217, 119, 87, 0.16)',
+        scale: 1.8,
+        backgroundColor: 'rgba(217, 119, 87, 0.14)',
         borderColor: 'var(--accent-primary)',
-        duration: 0.25,
+        duration: 0.2,
         ease: 'power2.out',
         overwrite: 'auto',
       });
-      gsap.to(dot, { scale: 0.5, duration: 0.2 });
+      gsap.to(dot, { scale: 0.5, duration: 0.15, overwrite: 'auto' });
     }
   });
 
   document.addEventListener('mouseout', (e) => {
     const target = e.target.closest(interactiveSelectors);
-    if (target) {
-      gsap.to(follower, {
-        scale: 1,
-        backgroundColor: 'transparent',
-        borderColor: 'rgba(217, 119, 87, 0.45)',
-        duration: 0.25,
-        ease: 'power2.out',
-        overwrite: 'auto',
-      });
-      gsap.to(dot, { scale: 1, duration: 0.2 });
+    if (target && isHovered) {
+      // Check if we didn't just move to another child of the interactive element
+      if (!e.relatedTarget || !e.relatedTarget.closest(interactiveSelectors)) {
+        isHovered = false;
+        gsap.to(follower, {
+          scale: 1,
+          backgroundColor: 'transparent',
+          borderColor: 'rgba(217, 119, 87, 0.55)',
+          duration: 0.2,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+        gsap.to(dot, { scale: 1, duration: 0.15, overwrite: 'auto' });
+      }
     }
   });
 }
 
 /**
- * 2. Full-Screen Overlay Menu with GSAP Timeline (Stagger Reveal & Reverse Animation)
+ * 2. Full-Screen Overlay Menu with GSAP Timeline
  */
 function initFullScreenMenu() {
   const menuToggle = document.querySelector('#menu-toggle');
@@ -107,7 +113,6 @@ function initFullScreenMenu() {
 
   let isMenuOpen = false;
 
-  // Build the master menu animation timeline
   const menuTl = gsap.timeline({
     paused: true,
     defaults: { ease: 'power3.inOut' },
@@ -122,25 +127,24 @@ function initFullScreenMenu() {
     .fromTo(
       mobileDrawer,
       { opacity: 0, clipPath: 'circle(0% at 92% 5%)' },
-      { opacity: 1, clipPath: 'circle(150% at 92% 5%)', duration: 0.45 }
+      { opacity: 1, clipPath: 'circle(150% at 92% 5%)', duration: 0.4 }
     )
     .fromTo(
       mobileNavLinks,
-      { y: 35, opacity: 0, skewY: 4 },
-      { y: 0, opacity: 1, skewY: 0, stagger: 0.06, duration: 0.35, ease: 'power2.out' },
-      '-=0.25'
+      { y: 25, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.05, duration: 0.3, ease: 'power2.out' },
+      '-=0.2'
     );
 
   if (mobileCta) {
     menuTl.fromTo(
       mobileCta,
-      { y: 20, opacity: 0, scale: 0.96 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' },
-      '-=0.2'
+      { y: 15, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.25, ease: 'power2.out' },
+      '-=0.15'
     );
   }
 
-  // Toggle button handler
   menuToggle.addEventListener('click', () => {
     isMenuOpen = !isMenuOpen;
     menuToggle.classList.toggle('is-active', isMenuOpen);
@@ -154,19 +158,20 @@ function initFullScreenMenu() {
     }
   });
 
-  // Close menu and navigate when clicking a mobile link
+  const closeMenuAndScroll = (targetId) => {
+    isMenuOpen = false;
+    menuToggle.classList.remove('is-active');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuTl.reverse();
+    smoothScrollTo(targetId);
+  };
+
   mobileNavLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
       const targetId = link.getAttribute('href');
       if (targetId && targetId.startsWith('#')) {
         e.preventDefault();
-        isMenuOpen = false;
-        menuToggle.classList.remove('is-active');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuTl.reverse();
-
-        // Smooth scroll to section
-        smoothScrollTo(targetId);
+        closeMenuAndScroll(targetId);
       }
     });
   });
@@ -176,11 +181,7 @@ function initFullScreenMenu() {
       const targetId = mobileCta.getAttribute('href');
       if (targetId && targetId.startsWith('#')) {
         e.preventDefault();
-        isMenuOpen = false;
-        menuToggle.classList.remove('is-active');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuTl.reverse();
-        smoothScrollTo(targetId);
+        closeMenuAndScroll(targetId);
       }
     });
   }
@@ -202,7 +203,7 @@ function initNavbarLineDrawing() {
       gsap.fromTo(
         line,
         { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 0.28, ease: 'power2.out', overwrite: 'auto' }
+        { scaleX: 1, duration: 0.24, ease: 'power2.out', overwrite: 'auto' }
       );
     });
 
@@ -212,7 +213,7 @@ function initNavbarLineDrawing() {
         gsap.to(line, {
           scaleX: 0,
           transformOrigin: 'right center',
-          duration: 0.24,
+          duration: 0.2,
           ease: 'power2.in',
           overwrite: 'auto',
         });
@@ -225,7 +226,6 @@ function initNavbarLineDrawing() {
  * 4. Section-to-Section Navigation with Smooth Scrolling
  */
 function initSmoothScrollLinks() {
-  // Delegate all anchor clicks with hash targets
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
@@ -242,24 +242,33 @@ function initSmoothScrollLinks() {
 }
 
 /**
- * Helper: Smooth Scroll to element using ScrollSmoother or GSAP ScrollTo
+ * Helper: Smooth Scroll to element using GSAP ScrollTo or native smooth scroll
  */
 function smoothScrollTo(targetSelector) {
   const targetEl = document.querySelector(targetSelector);
   if (!targetEl) return;
 
-  const smoother = getScrollSmoother();
+  const navHeight = 65;
+  let targetY = 0;
 
-  if (smoother) {
-    smoother.scrollTo(targetEl, true, 'top 70px');
-  } else if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
+  if (targetSelector === '#hero') {
+    targetY = 0;
+  } else {
+    const rect = targetEl.getBoundingClientRect();
+    targetY = Math.max(0, rect.top + window.pageYOffset - navHeight);
+  }
+
+  if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
     gsap.to(window, {
-      scrollTo: { y: targetEl, offsetY: 70, autoKill: false },
+      scrollTo: { y: targetY, autoKill: false },
       duration: 0.75,
-      ease: 'power3.inOut',
+      ease: 'power2.inOut',
     });
   } else {
-    targetEl.scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({
+      top: targetY,
+      behavior: 'smooth',
+    });
   }
 }
 
@@ -287,7 +296,7 @@ function initScrollSpy() {
                 gsap.to(line, {
                   scaleX: isCurrent ? 1 : 0,
                   transformOrigin: isCurrent ? 'left center' : 'right center',
-                  duration: 0.25,
+                  duration: 0.2,
                   ease: 'power2.out',
                   overwrite: 'auto',
                 });
@@ -296,7 +305,7 @@ function initScrollSpy() {
           }
         });
       },
-      { rootMargin: '-30% 0px -50% 0px' }
+      { rootMargin: '-25% 0px -45% 0px' }
     );
 
     sections.forEach((sec) => observer.observe(sec));
@@ -307,31 +316,34 @@ function initScrollSpy() {
  * Bootstrap Application on DOMContentLoaded
  */
 document.addEventListener('DOMContentLoaded', () => {
-  console.info('[App] Bootstrapping Portfolio with Advanced GSAP Interactions...');
+  console.info('[App] Bootstrapping Portfolio with GPU-Accelerated GSAP Interactions...');
 
-  // 1. Register GSAP Plugins (including ScrollToPlugin, ScrollSmoother, Flip, etc.)
+  // 1. Register GSAP Plugins
   registerGSAPPlugins();
 
-  // 2. Initialize ScrollSmoother
-  initScrollSmoother();
-
-  // 3. Advanced Interactions
+  // 2. Initialize Core Interactions
   initCustomCursor();
   initFullScreenMenu();
   initNavbarLineDrawing();
   initSmoothScrollLinks();
   initScrollSpy();
 
-  // 4. Initialize Sections
-  initHero();
-  initAbout();
-  initProjects();
-  initSkills();
-  initContact();
+  // 3. Initialize Sections with Defensive Error Boundaries
+  try { initHero(); } catch (e) { console.error('[App] Hero Init Error:', e); }
+  try { initAbout(); } catch (e) { console.error('[App] About Init Error:', e); }
+  try { initProjects(); } catch (e) { console.error('[App] Projects Init Error:', e); }
+  try { initSkills(); } catch (e) { console.error('[App] Skills Init Error:', e); }
+  try { initContact(); } catch (e) { console.error('[App] Contact Init Error:', e); }
 
-  // 5. Initialize Section Background Parallax & Global Scroll Refresh
+  // 4. Initialize Parallax & Refresh
   initParallaxEffects();
   initScrollTriggerRefresh();
 
-  console.info('[App] Portfolio initialized with smooth animations.');
+  // 5. Global ScrollTrigger Sort & Refresh across all pinned sections
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+  }
+
+  console.info('[App] Portfolio initialized with smooth 60+ FPS motion.');
 });

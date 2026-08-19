@@ -1,7 +1,6 @@
 /**
- * Skills Section Animation Module with Audited ScrollTrigger Timing
- * Implements per-card ScrollTrigger stagger reveals for skill tags, animated horizontal proficiency bars,
- * and subtle GSAP interactive hover micro-animations.
+ * Skills Section Animation Module (Performance-Optimized)
+ * Per-card ScrollTrigger reveals, GPU-accelerated progress bars, and crisp pill micro-animations.
  */
 
 import { portfolioData } from '../data.js';
@@ -13,13 +12,13 @@ export function initSkills() {
   // 1. Render Categorized Skills & Proficiency Bars into DOM
   renderSkills(skillsElement);
 
-  // 2. Setup Audited ScrollTrigger Stagger & Progress Bar Fill Animations
+  // 2. Setup ScrollTrigger Stagger & Progress Bar Fill Animations
   initSkillsScrollAnimation(skillsElement);
 
-  // 3. Setup GSAP Interactive Hover Micro-animations on Tags
+  // 3. Setup Interactive Hover Micro-animations on Tags
   initSkillsHoverEffects(skillsElement);
 
-  console.info('[Section] Skills animations initialized with audited ScrollTrigger timing.');
+  console.info('[Section] Skills animations initialized.');
 }
 
 /**
@@ -65,7 +64,7 @@ function renderSkills(skillsElement) {
 }
 
 /**
- * Animate each skill category card, proficiency bar, and child pills precisely when entering viewport
+ * Animate each skill category card and progress bar on viewport entry
  */
 function initSkillsScrollAnimation(skillsElement) {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -78,30 +77,30 @@ function initSkillsScrollAnimation(skillsElement) {
     const pills = card.querySelectorAll('.tag-pill');
     const targetProgress = progressFill ? parseFloat(progressFill.getAttribute('data-progress')) || 90 : 90;
 
-    // Card entrance timeline tied specifically to this card's viewport entry
     const cardTl = gsap.timeline({
       scrollTrigger: {
         trigger: card,
         start: 'top 85%',
         toggleActions: 'play none none none',
         once: true,
+        fastScrollEnd: true,
       },
     });
 
     // 1. Card container enters smoothly
     cardTl.fromTo(
       card,
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' }
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }
     );
 
-    // 2. Proficiency bar animates to target percentage
+    // 2. Proficiency bar fill
     if (progressFill) {
       cardTl.fromTo(
         progressFill,
         { width: '0%' },
-        { width: `${targetProgress}%`, duration: 1.2, ease: 'power2.out' },
-        '-=0.45'
+        { width: `${targetProgress}%`, duration: 0.9, ease: 'power2.out' },
+        '-=0.35'
       );
     }
 
@@ -109,9 +108,9 @@ function initSkillsScrollAnimation(skillsElement) {
     if (pills && pills.length > 0) {
       cardTl.fromTo(
         pills,
-        { opacity: 0, y: 14, scale: 0.92 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.03, ease: 'power2.out' },
-        '-=0.8'
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.02, ease: 'power2.out' },
+        '-=0.65'
       );
     }
   });
@@ -128,13 +127,9 @@ function initSkillsHoverEffects(skillsElement) {
   pills.forEach((pill) => {
     pill.addEventListener('mouseenter', () => {
       gsap.to(pill, {
-        scale: 1.05,
-        y: -3,
-        backgroundColor: '#ffffff',
-        borderColor: 'var(--accent-primary)',
-        color: 'var(--accent-primary)',
-        boxShadow: '0 4px 14px var(--accent-glow)',
-        duration: 0.22,
+        scale: 1.04,
+        y: -2,
+        duration: 0.18,
         ease: 'power2.out',
         overwrite: 'auto',
       });
@@ -144,11 +139,7 @@ function initSkillsHoverEffects(skillsElement) {
       gsap.to(pill, {
         scale: 1,
         y: 0,
-        backgroundColor: 'var(--bg-card)',
-        borderColor: 'var(--border-subtle)',
-        color: 'var(--text-primary)',
-        boxShadow: '0 1px 4px rgba(43, 36, 32, 0.04)',
-        duration: 0.25,
+        duration: 0.2,
         ease: 'power2.inOut',
         overwrite: 'auto',
       });

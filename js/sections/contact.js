@@ -1,10 +1,10 @@
 /**
- * Contact & Footer Section Animation Module with Audited ScrollTrigger Timing
- * Implements interactive headline hover wobble with SplitText, ScrollTrigger entrance for CTA & socials,
- * clipboard copy micro-animations, and back-to-top handler.
+ * Contact & Footer Section Animation Module (Performance-Optimized)
+ * Interactive headline hover, GPU-friendly entrance triggers, and clipboard copy handler.
  */
 
 import { portfolioData } from '../data.js';
+import { splitTextHelper } from '../animations.js';
 
 export function initContact() {
   const contactElement = document.querySelector('#contact');
@@ -13,10 +13,10 @@ export function initContact() {
   // 1. Render Social Links
   renderSocialLinks(contactElement);
 
-  // 2. Setup Audited ScrollTrigger Entrance for Contact Block & Social Icons
+  // 2. Setup ScrollTrigger Entrance for Contact Block & Social Icons
   initContactScrollEntrance(contactElement);
 
-  // 3. Setup Interactive CTA Heading Hover Animation (SplitText Wobble / Wave)
+  // 3. Setup Interactive CTA Heading Hover Animation
   initContactHeadingHover(contactElement);
 
   // 4. Setup Email Copy Interaction & Feedback
@@ -25,7 +25,7 @@ export function initContact() {
   // 5. Setup Back to Top Smooth Button
   initBackToTop(contactElement);
 
-  console.info('[Section] Contact & Footer animations initialized with audited ScrollTrigger timing.');
+  console.info('[Section] Contact & Footer animations initialized.');
 }
 
 /**
@@ -56,63 +56,63 @@ function initContactScrollEntrance(contactElement) {
   const socialContainer = contactElement.querySelector('#footer-social-links');
   const footerRow = contactElement.querySelector('.footer-bottom-row');
 
-  // Entrance of main CTA block (triggers when CTA enters comfortable view)
   if (ctaBlock) {
     gsap.fromTo(
       ctaBlock,
-      { y: 35, opacity: 0 },
+      { y: 25, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        duration: 0.85,
-        ease: 'power3.out',
+        duration: 0.65,
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: ctaBlock,
-          start: 'top 80%',
+          start: 'top 85%',
           toggleActions: 'play none none none',
           once: true,
+          fastScrollEnd: true,
         },
       }
     );
   }
 
-  // Stagger entrance of social / contact icons
   if (socialContainer) {
     const socialBtns = socialContainer.querySelectorAll('.social-link-btn');
     if (socialBtns.length > 0) {
       gsap.fromTo(
         socialBtns,
-        { y: 20, opacity: 0 },
+        { y: 15, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.6,
-          stagger: 0.08,
+          duration: 0.5,
+          stagger: 0.06,
           ease: 'power2.out',
           scrollTrigger: {
             trigger: socialContainer,
-            start: 'top 90%',
+            start: 'top 92%',
             toggleActions: 'play none none none',
             once: true,
+            fastScrollEnd: true,
           },
         }
       );
     }
   }
 
-  // Fade in footer bottom meta
   if (footerRow) {
     gsap.fromTo(
       footerRow,
       { opacity: 0 },
       {
         opacity: 1,
-        duration: 0.7,
+        duration: 0.5,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: footerRow,
-          start: 'top 96%',
+          start: 'top 98%',
           once: true,
+          fastScrollEnd: true,
         },
       }
     );
@@ -120,7 +120,7 @@ function initContactScrollEntrance(contactElement) {
 }
 
 /**
- * Interactive CTA Headline Hover Animation using SplitText
+ * Interactive CTA Headline Hover Animation (Dynamic Letter Wave & Wobble Scatter)
  */
 function initContactHeadingHover(contactElement) {
   if (typeof gsap === 'undefined') return;
@@ -128,53 +128,73 @@ function initContactHeadingHover(contactElement) {
   const headline = contactElement.querySelector('#contact-title');
   if (!headline) return;
 
-  let chars = [];
+  const { chars } = splitTextHelper(headline, 'contact-char', 'contact-word');
+  if (!chars || chars.length === 0) return;
 
-  if (typeof SplitText !== 'undefined') {
-    try {
-      const split = new SplitText(headline, {
-        type: 'chars, words',
-        charsClass: 'contact-char',
-      });
-      chars = split.chars || [];
-    } catch (err) {
-      console.warn('[Contact] SplitText error, falling back to whole element:', err);
-    }
-  }
+  let waveTween = null;
 
-  if (chars.length > 0) {
-    let isHovering = false;
+  headline.addEventListener('mouseenter', () => {
+    if (waveTween) waveTween.kill();
 
-    headline.addEventListener('mouseenter', () => {
-      if (isHovering) return;
-      isHovering = true;
-
-      gsap.to(chars, {
-        y: -8,
-        rotate: (i) => (i % 2 === 0 ? 3 : -3),
-        stagger: 0.015,
+    waveTween = gsap.timeline()
+      .to(chars, {
+        y: (i) => -12 + (i % 3) * 3,
+        rotate: (i) => (i % 2 === 0 ? 8 : -8),
+        scale: 1.08,
+        stagger: {
+          each: 0.016,
+          from: 'start',
+        },
         duration: 0.22,
         ease: 'power2.out',
-        yoyo: true,
-        repeat: 1,
-        overwrite: 'auto',
-        onComplete: () => {
-          isHovering = false;
+      })
+      .to(chars, {
+        y: 0,
+        rotate: 0,
+        scale: 1,
+        stagger: {
+          each: 0.014,
+          from: 'start',
         },
+        duration: 0.35,
+        ease: 'elastic.out(1.2, 0.4)',
       });
+  });
+
+  // Individual character hover micro-pop (strictly once per hover)
+  chars.forEach((char) => {
+    let isJumping = false;
+
+    char.addEventListener('mouseenter', (e) => {
+      e.stopPropagation();
+      if (isJumping) return;
+      isJumping = true;
+
+      gsap.timeline({
+        onComplete: () => {
+          isJumping = false;
+        },
+      })
+        .to(char, {
+          y: -14,
+          scale: 1.18,
+          rotate: (Math.random() - 0.5) * 10,
+          duration: 0.2,
+          ease: 'power2.out',
+        })
+        .to(char, {
+          y: 0,
+          scale: 1,
+          rotate: 0,
+          duration: 0.35,
+          ease: 'back.out(2)',
+        });
     });
-  } else {
-    headline.addEventListener('mouseenter', () => {
-      gsap.to(headline, { scale: 1.03, duration: 0.35, ease: 'back.out(2)' });
-    });
-    headline.addEventListener('mouseleave', () => {
-      gsap.to(headline, { scale: 1, duration: 0.3, ease: 'power2.out' });
-    });
-  }
+  });
 }
 
 /**
- * Copy Email interaction with animated feedback and micro-bounce
+ * Copy Email interaction with animated feedback
  */
 function initEmailCopyHandler(contactElement) {
   const copyBtn = contactElement.querySelector('#email-copy-btn');
@@ -186,9 +206,9 @@ function initEmailCopyHandler(contactElement) {
 
     if (typeof gsap !== 'undefined') {
       gsap.timeline()
-        .to(copyBtn, { scale: 0.94, duration: 0.1, ease: 'power2.in' })
-        .to(copyBtn, { scale: 1.03, duration: 0.2, ease: 'back.out(2)' })
-        .to(copyBtn, { scale: 1, duration: 0.15, ease: 'power2.out' });
+        .to(copyBtn, { scale: 0.96, duration: 0.08, ease: 'power2.in' })
+        .to(copyBtn, { scale: 1.02, duration: 0.15, ease: 'power2.out' })
+        .to(copyBtn, { scale: 1, duration: 0.1, ease: 'power2.out' });
     }
 
     try {
@@ -198,15 +218,15 @@ function initEmailCopyHandler(contactElement) {
         copyFeedback.classList.add('is-visible');
 
         if (typeof gsap !== 'undefined') {
-          gsap.fromTo(copyFeedback, { opacity: 0, y: 5 }, { opacity: 1, y: 0, duration: 0.2 });
+          gsap.fromTo(copyFeedback, { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: 0.18 });
         }
 
         setTimeout(() => {
           if (typeof gsap !== 'undefined') {
             gsap.to(copyFeedback, {
               opacity: 0,
-              y: -5,
-              duration: 0.25,
+              y: -4,
+              duration: 0.2,
               onComplete: () => {
                 copyFeedback.classList.remove('is-visible');
               },
@@ -214,7 +234,7 @@ function initEmailCopyHandler(contactElement) {
           } else {
             copyFeedback.classList.remove('is-visible');
           }
-        }, 2200);
+        }, 2000);
       }
     } catch (err) {
       console.warn('Clipboard write failed, fallback to mailto:', err);
@@ -232,13 +252,13 @@ function initBackToTop(contactElement) {
 
   backToTopBtn.addEventListener('mouseenter', () => {
     if (typeof gsap !== 'undefined') {
-      gsap.to(backToTopBtn.querySelector('svg'), { y: -3, duration: 0.2, ease: 'power2.out' });
+      gsap.to(backToTopBtn.querySelector('svg'), { y: -2, duration: 0.15, ease: 'power2.out' });
     }
   });
 
   backToTopBtn.addEventListener('mouseleave', () => {
     if (typeof gsap !== 'undefined') {
-      gsap.to(backToTopBtn.querySelector('svg'), { y: 0, duration: 0.2, ease: 'power2.out' });
+      gsap.to(backToTopBtn.querySelector('svg'), { y: 0, duration: 0.15, ease: 'power2.out' });
     }
   });
 }

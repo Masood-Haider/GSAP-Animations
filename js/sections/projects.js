@@ -1,12 +1,13 @@
 /**
- * Projects Section Animation Module with Compact, 100% Viewport Fit & Smooth GSAP Flip
- * Implements calibrated horizontal gallery scroll with full card visibility,
- * center-focus card scaling, card hover micro-animations, and responsive layout.
+ * Projects Section Animation Module (Performance-Optimized & Bulletproof Horizontal Scroll)
+ * Ultra-smooth 60+ FPS horizontal gallery scroll, responsive pinned animation,
+ * GPU-accelerated hover states, and smooth GSAP Flip filtering.
  */
 
 import { portfolioData } from '../data.js';
 
 let activeFilter = 'all';
+let horizontalScrollTween = null;
 
 export function initProjects() {
   const projectsSection = document.querySelector('#projects');
@@ -18,16 +19,16 @@ export function initProjects() {
   // 2. Render Project Cards into Track
   renderProjectCards(projectsSection);
 
-  // 3. Setup GSAP Horizontal Scroll & Responsive Animations
+  // 3. Setup GSAP Horizontal Scroll Gallery with Pinning
   initProjectsScrollAnimation(projectsSection);
 
-  // 4. Setup Interactive GSAP Card Hover Micro-animations
+  // 4. Setup GPU-Accelerated Card Hover Effects
   initProjectsHoverEffects(projectsSection);
 
   // 5. Setup GSAP Flip Category Filtering
   initProjectsFiltering(projectsSection);
 
-  console.info('[Section] Projects animations initialized.');
+  console.info('[Section] Projects animations initialized with full horizontal scroll.');
 }
 
 /**
@@ -36,6 +37,8 @@ export function initProjects() {
 function renderFilterButtons(projectsSection) {
   const filterBar = projectsSection.querySelector('#projects-filter-bar');
   if (!filterBar || !portfolioData.projectFilters) return;
+
+  if (filterBar.children.length > 0) return;
 
   const projects = portfolioData.projects || [];
 
@@ -65,6 +68,8 @@ function renderProjectCards(projectsSection) {
   const projectsTrack = projectsSection.querySelector('#projects-track');
   if (!projectsTrack || !portfolioData.projects) return;
 
+  if (projectsTrack.children.length > 0) return;
+
   projectsTrack.innerHTML = portfolioData.projects
     .map((project, index) => {
       const tagsHtml = project.tags
@@ -86,7 +91,7 @@ function renderProjectCards(projectsSection) {
                 <span class="project-hover-pill">
                   <span>Explore</span>
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </span>
               </div>
@@ -109,7 +114,7 @@ function renderProjectCards(projectsSection) {
             <a href="${project.liveUrl}" class="project-link" aria-label="View live project ${project.title}">
               <span>View Case</span>
               <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
           </div>
@@ -117,6 +122,72 @@ function renderProjectCards(projectsSection) {
       `;
     })
     .join('');
+}
+
+/**
+ * Setup GSAP Horizontal Scroll Gallery (Active on Desktop, Laptop, Tablet >= 768px)
+ */
+function initProjectsScrollAnimation(projectsSection) {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+  const projectsTrack = projectsSection.querySelector('#projects-track');
+  const projectCards = projectsSection.querySelectorAll('.project-card');
+  if (!projectsTrack || projectCards.length === 0) return;
+
+  const mm = gsap.matchMedia();
+
+  // Desktop, Laptop, and Tablet (>= 768px): Pinned Horizontal Scrolling
+  mm.add('(min-width: 768px)', () => {
+    const getScrollDistance = () => {
+      const distance = projectsTrack.scrollWidth - window.innerWidth + 120;
+      return Math.max(0, distance);
+    };
+
+    horizontalScrollTween = gsap.to(projectsTrack, {
+      x: () => -getScrollDistance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: projectsSection,
+        pin: true,
+        start: 'top top',
+        end: () => `+=${getScrollDistance() + 150}`,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        anticipatePin: 1,
+      },
+    });
+
+    return () => {
+      if (horizontalScrollTween) horizontalScrollTween.kill();
+    };
+  });
+
+  // Mobile (< 768px): Clean vertical stack
+  mm.add('(max-width: 767px)', () => {
+    projectCards.forEach((card) => {
+      gsap.fromTo(
+        card,
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.45,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+            once: true,
+          },
+        }
+      );
+    });
+  });
+
+  // Ensure ScrollTrigger refreshes accurately once layout has rendered
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 100);
 }
 
 /**
@@ -133,7 +204,6 @@ function initProjectsFiltering(projectsSection) {
 
       activeFilter = selectedSlug;
 
-      // Update button active states
       filterBtns.forEach((b) => {
         const isCurrent = b.getAttribute('data-filter') === selectedSlug;
         b.classList.toggle('is-active', isCurrent);
@@ -152,24 +222,11 @@ function initProjectsFiltering(projectsSection) {
         });
 
         Flip.from(state, {
-          duration: 0.45,
+          duration: 0.35,
           ease: 'power2.inOut',
           scale: true,
           fade: true,
           absolute: false,
-          onEnter: (elements) =>
-            gsap.fromTo(
-              elements,
-              { opacity: 0, scale: 0.9 },
-              { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' }
-            ),
-          onLeave: (elements) =>
-            gsap.to(elements, {
-              opacity: 0,
-              scale: 0.9,
-              duration: 0.25,
-              ease: 'power2.in',
-            }),
           onComplete: () => {
             if (typeof ScrollTrigger !== 'undefined') {
               ScrollTrigger.refresh();
@@ -191,105 +248,7 @@ function initProjectsFiltering(projectsSection) {
 }
 
 /**
- * Setup GSAP Horizontal Scroll Gallery
- */
-function initProjectsScrollAnimation(projectsSection) {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-  const projectsTrack = projectsSection.querySelector('#projects-track');
-  const projectCards = projectsSection.querySelectorAll('.project-card');
-  if (!projectsTrack || projectCards.length === 0) return;
-
-  const mm = gsap.matchMedia();
-
-  // Desktop & Large Screens (>= 1025px): Horizontal Scroll Gallery
-  mm.add('(min-width: 1025px)', () => {
-    // Accurately compute real horizontal scroll distance from live DOM width
-    const getScrollDistance = () => {
-      const distance = projectsTrack.scrollWidth - window.innerWidth + 100;
-      return Math.max(0, distance);
-    };
-
-    // Master Horizontal Scroll Tween
-    const horizontalTween = gsap.to(projectsTrack, {
-      x: () => -getScrollDistance(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: projectsSection,
-        pin: true,
-        start: 'top top',
-        end: () => `+=${getScrollDistance() + 250}`,
-        scrub: 1,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-      },
-    });
-
-    // Card Focus Animation tied to containerAnimation
-    projectCards.forEach((card, i) => {
-      const isFirst = i === 0;
-      const isLast = i === projectCards.length - 1;
-
-      gsap.fromTo(
-        card,
-        { scale: isFirst ? 1 : 0.94, opacity: isFirst ? 1 : 0.7 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.4,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: card,
-            containerAnimation: horizontalTween,
-            start: 'left 92%',
-            end: 'center 50%',
-            scrub: 0.4,
-          },
-        }
-      );
-
-      if (!isLast) {
-        gsap.to(card, {
-          scale: 0.94,
-          opacity: 0.7,
-          ease: 'power2.in',
-          scrollTrigger: {
-            trigger: card,
-            containerAnimation: horizontalTween,
-            start: 'center 45%',
-            end: 'right 8%',
-            scrub: 0.4,
-          },
-        });
-      }
-    });
-  });
-
-  // Mobile & Tablet (< 1025px): Vertical Grid with Individual Card ScrollTriggers
-  mm.add('(max-width: 1024px)', () => {
-    projectCards.forEach((card) => {
-      gsap.fromTo(
-        card,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-            once: true,
-          },
-        }
-      );
-    });
-  });
-}
-
-/**
- * Interactive GSAP Card Hover Micro-animations (Slide-up Overlay and View Label)
+ * Interactive GSAP Card Hover Micro-animations (100% GPU Composited)
  */
 function initProjectsHoverEffects(projectsSection) {
   if (typeof gsap === 'undefined') return;
@@ -304,31 +263,31 @@ function initProjectsHoverEffects(projectsSection) {
     if (!overlay || !pill) return;
 
     gsap.set(overlay, { yPercent: 100, opacity: 0 });
-    gsap.set(pill, { y: 15, opacity: 0 });
+    gsap.set(pill, { y: 12, opacity: 0 });
 
     card.addEventListener('mouseenter', () => {
       gsap.to(overlay, {
         yPercent: 0,
         opacity: 1,
-        duration: 0.3,
-        ease: 'power3.out',
+        duration: 0.25,
+        ease: 'power2.out',
         overwrite: 'auto',
       });
 
       gsap.to(pill, {
         y: 0,
         opacity: 1,
-        duration: 0.25,
-        delay: 0.04,
+        duration: 0.2,
+        delay: 0.03,
         ease: 'power2.out',
         overwrite: 'auto',
       });
 
       if (shape) {
         gsap.to(shape, {
-          scale: 1.25,
-          filter: 'blur(28px)',
-          duration: 0.4,
+          scale: 1.15,
+          opacity: 1,
+          duration: 0.3,
           ease: 'power2.out',
           overwrite: 'auto',
         });
@@ -339,15 +298,15 @@ function initProjectsHoverEffects(projectsSection) {
       gsap.to(overlay, {
         yPercent: 100,
         opacity: 0,
-        duration: 0.25,
+        duration: 0.2,
         ease: 'power2.in',
         overwrite: 'auto',
       });
 
       gsap.to(pill, {
-        y: 15,
+        y: 12,
         opacity: 0,
-        duration: 0.2,
+        duration: 0.15,
         ease: 'power2.in',
         overwrite: 'auto',
       });
@@ -355,8 +314,8 @@ function initProjectsHoverEffects(projectsSection) {
       if (shape) {
         gsap.to(shape, {
           scale: 1,
-          filter: 'blur(40px)',
-          duration: 0.4,
+          opacity: 0.85,
+          duration: 0.3,
           ease: 'power2.out',
           overwrite: 'auto',
         });
