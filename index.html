@@ -295,317 +295,603 @@
       </section>
 
       <!-- 3. Projects Section (Horizontal Scrolling Gallery on Desktop) -->
+      <!-- 3. Long Horizontal Page: Selected Projects & Technical Skills -->
       <section id="projects" class="section projects-section" aria-labelledby="projects-title">
         <div class="projects-horizontal-pin" id="projects-pin">
-          <div class="container projects-header-container">
-            <div class="section-header">
-              <div class="section-badge">
-                <span class="badge-dot"></span>
-                <span>02 // Selected Projects</span>
+          <div class="horizontal-page-canvas" id="horizontal-canvas">
+            
+            <!-- Block A: Selected Projects -->
+            <div class="canvas-section-block projects-block">
+              <div class="canvas-header-column">
+                <div class="section-badge">
+                  <span class="badge-dot"></span>
+                  <span>02 // Selected Projects</span>
+                </div>
+                <h2 id="projects-title" class="canvas-section-title">Featured Systems &amp; Applications</h2>
+                <p class="canvas-section-subtitle">A collection of full-stack platforms, algorithm visualizers, and interactive experiments built for performance and scale.</p>
+                
+                <!-- Category Filter Buttons Bar (Animated with GSAP Flip) -->
+                <div class="projects-filter-bar" id="projects-filter-bar" role="tablist" aria-label="Filter Projects by Category">
+                  <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
+                    <span>All</span>
+                    <span class="filter-btn-count">6</span>
+                  </button>
+                  <button class="filter-btn" data-filter="fullstack" role="tab" aria-selected="false">
+                    <span>Full Stack</span>
+                    <span class="filter-btn-count">2</span>
+                  </button>
+                  <button class="filter-btn" data-filter="systems" role="tab" aria-selected="false">
+                    <span>Systems</span>
+                    <span class="filter-btn-count">2</span>
+                  </button>
+                  <button class="filter-btn" data-filter="motion" role="tab" aria-selected="false">
+                    <span>Motion</span>
+                    <span class="filter-btn-count">2</span>
+                  </button>
+                </div>
+
+                <div class="canvas-scroll-hint" aria-hidden="true">
+                  <span>Scroll to explore</span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 8H14M14 8L9 3M14 8L9 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
               </div>
-              <h2 id="projects-title" class="section-title">Featured Systems &amp; Applications</h2>
-              <p class="section-subtitle">A collection of full-stack platforms, algorithm visualizers, and interactive experiments built for performance and scale.</p>
+
+              <!-- Projects Cards Row -->
+              <div class="canvas-cards-row" id="projects-cards-row">
+                <!-- Project 1 -->
+                <article class="card project-card" data-project-id="nexus-stack" data-category="fullstack">
+                  <div class="project-card-image-wrap">
+                    <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Nexus Full Stack Platform">
+                      <div class="abstract-shape-mesh"></div>
+                      <div class="abstract-graphic">
+                        <div class="abstract-shape-circle" style="background: var(--grad-1);"></div>
+                      </div>
+                      <span class="abstract-badge">01 // 2026</span>
+                      <div class="project-hover-overlay">
+                        <span class="project-hover-pill">
+                          <span>Explore</span>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-card-meta">
+                    <span class="project-category">Full Stack &amp; Cloud</span>
+                    <span class="project-year">2026</span>
+                  </div>
+                  <h3 class="project-title">Nexus Full Stack Platform</h3>
+                  <p class="project-description">A distributed web platform with real-time collaboration, microservices architecture, and WebSocket data streams.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Node.js</span>
+                    <span class="project-tag">React</span>
+                    <span class="project-tag">PostgreSQL</span>
+                    <span class="project-tag">WebSockets</span>
+                    <span class="project-tag">GSAP</span>
+                  </div>
+                  <div class="project-link-row">
+                    <a href="#" class="project-link" aria-label="View live project Nexus Full Stack Platform">
+                      <span>View Case</span>
+                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="card project-card" data-project-id="algo-visualizer" data-category="systems">
+                  <div class="project-card-image-wrap">
+                    <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Algorithmic Motion Lab">
+                      <div class="abstract-shape-mesh"></div>
+                      <div class="abstract-graphic">
+                        <div class="abstract-shape-circle" style="background: var(--grad-2);"></div>
+                      </div>
+                      <span class="abstract-badge">02 // 2025</span>
+                      <div class="project-hover-overlay">
+                        <span class="project-hover-pill">
+                          <span>Explore</span>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-card-meta">
+                    <span class="project-category">Computer Science &amp; Visuals</span>
+                    <span class="project-year">2025</span>
+                  </div>
+                  <h3 class="project-title">Algorithmic Motion Lab</h3>
+                  <p class="project-description">An interactive algorithm visualizer demonstrating graph traversals, dynamic programming, and tree balancing with smooth state transitions.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Vanilla JS</span>
+                    <span class="project-tag">Data Structures</span>
+                    <span class="project-tag">GSAP</span>
+                    <span class="project-tag">Canvas 2D</span>
+                  </div>
+                  <div class="project-link-row">
+                    <a href="#" class="project-link" aria-label="View live project Algorithmic Motion Lab">
+                      <span>View Case</span>
+                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="card project-card" data-project-id="hyper-commerce" data-category="fullstack">
+                  <div class="project-card-image-wrap">
+                    <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Hyper E-Commerce Engine">
+                      <div class="abstract-shape-mesh"></div>
+                      <div class="abstract-graphic">
+                        <div class="abstract-shape-circle" style="background: var(--grad-3);"></div>
+                      </div>
+                      <span class="abstract-badge">03 // 2025</span>
+                      <div class="project-hover-overlay">
+                        <span class="project-hover-pill">
+                          <span>Explore</span>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-card-meta">
+                    <span class="project-category">Full Stack Application</span>
+                    <span class="project-year">2025</span>
+                  </div>
+                  <h3 class="project-title">Hyper E-Commerce Engine</h3>
+                  <p class="project-description">High-speed headless e-commerce store with serverless backend, optimized cart state management, and fluid checkout animations.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">TypeScript</span>
+                    <span class="project-tag">Express</span>
+                    <span class="project-tag">MongoDB</span>
+                    <span class="project-tag">Stripe API</span>
+                    <span class="project-tag">Tailwind</span>
+                  </div>
+                  <div class="project-link-row">
+                    <a href="#" class="project-link" aria-label="View live project Hyper E-Commerce Engine">
+                      <span>View Case</span>
+                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+
+                <!-- Project 4 -->
+                <article class="card project-card" data-project-id="zenith-dashboard" data-category="motion">
+                  <div class="project-card-image-wrap">
+                    <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Zenith Analytics Suite">
+                      <div class="abstract-shape-mesh"></div>
+                      <div class="abstract-graphic">
+                        <div class="abstract-shape-circle" style="background: var(--grad-4);"></div>
+                      </div>
+                      <span class="abstract-badge">04 // 2025</span>
+                      <div class="project-hover-overlay">
+                        <span class="project-hover-pill">
+                          <span>Explore</span>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-card-meta">
+                    <span class="project-category">Motion &amp; Systems</span>
+                    <span class="project-year">2025</span>
+                  </div>
+                  <h3 class="project-title">Zenith Analytics Suite</h3>
+                  <p class="project-description">Real-time enterprise metrics dashboard with high-throughput streaming charts and interactive data filtering.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">React</span>
+                    <span class="project-tag">D3.js</span>
+                    <span class="project-tag">GSAP</span>
+                    <span class="project-tag">Node.js</span>
+                    <span class="project-tag">Tailwind</span>
+                  </div>
+                  <div class="project-link-row">
+                    <a href="#" class="project-link" aria-label="View live project Zenith Analytics Suite">
+                      <span>View Case</span>
+                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+
+                <!-- Project 5 -->
+                <article class="card project-card" data-project-id="lumina-gateway" data-category="systems">
+                  <div class="project-card-image-wrap">
+                    <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Lumina API Gateway">
+                      <div class="abstract-shape-mesh"></div>
+                      <div class="abstract-graphic">
+                        <div class="abstract-shape-circle" style="background: var(--grad-5);"></div>
+                      </div>
+                      <span class="abstract-badge">05 // 2024</span>
+                      <div class="project-hover-overlay">
+                        <span class="project-hover-pill">
+                          <span>Explore</span>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-card-meta">
+                    <span class="project-category">Distributed Systems</span>
+                    <span class="project-year">2024</span>
+                  </div>
+                  <h3 class="project-title">Lumina API Gateway</h3>
+                  <p class="project-description">Sub-millisecond rate-limiting and reverse proxy service built with Go and Redis for microservice backends.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Go</span>
+                    <span class="project-tag">Redis</span>
+                    <span class="project-tag">Docker</span>
+                    <span class="project-tag">Microservices</span>
+                    <span class="project-tag">REST</span>
+                  </div>
+                  <div class="project-link-row">
+                    <a href="#" class="project-link" aria-label="View live project Lumina API Gateway">
+                      <span>View Case</span>
+                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+
+                <!-- Project 6 -->
+                <article class="card project-card" data-project-id="vortex-motion" data-category="motion">
+                  <div class="project-card-image-wrap">
+                    <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Vortex Creative Engine">
+                      <div class="abstract-shape-mesh"></div>
+                      <div class="abstract-graphic">
+                        <div class="abstract-shape-circle" style="background: var(--grad-6);"></div>
+                      </div>
+                      <span class="abstract-badge">06 // 2024</span>
+                      <div class="project-hover-overlay">
+                        <span class="project-hover-pill">
+                          <span>Explore</span>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-card-meta">
+                    <span class="project-category">Creative WebGL</span>
+                    <span class="project-year">2024</span>
+                  </div>
+                  <h3 class="project-title">Vortex Creative Engine</h3>
+                  <p class="project-description">GPU-accelerated interactive particle system with custom GLSL shaders and responsive cursor physics.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">WebGL</span>
+                    <span class="project-tag">Three.js</span>
+                    <span class="project-tag">GSAP</span>
+                    <span class="project-tag">Shader GLSL</span>
+                    <span class="project-tag">Canvas</span>
+                  </div>
+                  <div class="project-link-row">
+                    <a href="#" class="project-link" aria-label="View live project Vortex Creative Engine">
+                      <span>View Case</span>
+                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+              </div>
             </div>
 
-            <!-- Category Filter Buttons Bar (Animated with GSAP Flip) -->
-            <div class="projects-filter-bar" id="projects-filter-bar" role="tablist" aria-label="Filter Projects by Category">
-              <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
-                <span>All Projects</span>
-                <span class="filter-btn-count">6</span>
-              </button>
-              <button class="filter-btn" data-filter="fullstack" role="tab" aria-selected="false">
-                <span>Full Stack</span>
-                <span class="filter-btn-count">2</span>
-              </button>
-              <button class="filter-btn" data-filter="systems" role="tab" aria-selected="false">
-                <span>Systems &amp; CS</span>
-                <span class="filter-btn-count">2</span>
-              </button>
-              <button class="filter-btn" data-filter="motion" role="tab" aria-selected="false">
-                <span>Creative Motion</span>
-                <span class="filter-btn-count">2</span>
-              </button>
+            <!-- Transition Bridge Divider -->
+            <div class="canvas-transition-divider" aria-hidden="true">
+              <div class="canvas-divider-line"></div>
+              <div class="canvas-divider-badge">
+                <span class="badge-dot"></span>
+                <span>Technical Stack</span>
+              </div>
+              <div class="canvas-divider-line"></div>
             </div>
-          </div>
 
-          <!-- Horizontal Track (switches to vertical grid on mobile) -->
-          <div class="projects-track-wrapper">
-            <div class="projects-track" id="projects-track">
-              <!-- Project 1 -->
-              <article class="card project-card" data-project-id="nexus-stack" data-category="fullstack">
-                <div class="project-card-image-wrap">
-                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Nexus Full Stack Platform">
-                    <div class="abstract-shape-mesh"></div>
-                    <div class="abstract-graphic">
-                      <div class="abstract-shape-circle" style="background: var(--grad-1);"></div>
+            <!-- Block B: Technical Skills & Architecture -->
+            <div class="canvas-section-block skills-block" id="skills">
+              <div class="canvas-header-column">
+                <div class="section-badge">
+                  <span class="badge-dot"></span>
+                  <span>03 // Technical Arsenal</span>
+                </div>
+                <h2 id="skills-title" class="canvas-section-title">Technical Skills &amp; Architecture</h2>
+                <p class="canvas-section-subtitle">Full-stack competencies spanning frontend engineering, backend services, database design, and algorithmic problem solving.</p>
+                
+                <div class="canvas-skills-badge-list">
+                  <span class="canvas-skill-stat-chip">5 Disciplines</span>
+                  <span class="canvas-skill-stat-chip">Production Ready</span>
+                  <span class="canvas-skill-stat-chip">60 FPS UI</span>
+                </div>
+
+                <div class="canvas-scroll-hint" aria-hidden="true">
+                  <span>Core Disciplines</span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 8H14M14 8L9 3M14 8L9 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Skills Cards Row -->
+              <div class="canvas-cards-row" id="skills-cards-row">
+                <!-- Skill Card 1: Full Stack -->
+                <article class="card skill-horizontal-card" data-category="skills" data-skill-id="fullstack-web">
+                  <div class="skill-card-glow" aria-hidden="true"></div>
+                  <div class="skill-card-top-row">
+                    <span class="skill-card-badge">01 // Full Stack</span>
+                    <span class="skill-proficiency-badge">96% Mastery</span>
+                  </div>
+                  <h3 class="skill-card-title">Full Stack &amp; Web Dev</h3>
+                  <p class="skill-card-lead">Designing responsive client applications paired with resilient, scalable backend services.</p>
+                  <div class="skill-metrics-grid">
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Latency</span>
+                      <span class="skill-metric-value">&lt;50ms</span>
                     </div>
-                    <span class="abstract-badge">01 // 2026</span>
-                    <div class="project-hover-overlay">
-                      <span class="project-hover-pill">
-                        <span>Explore</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">API Style</span>
+                      <span class="skill-metric-value">REST/GraphQL</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Target</span>
+                      <span class="skill-metric-value">60 FPS</span>
                     </div>
                   </div>
-                </div>
-                <div class="project-card-meta">
-                  <span class="project-category">Full Stack &amp; Cloud</span>
-                  <span class="project-year">2026</span>
-                </div>
-                <h3 class="project-title">Nexus Full Stack Platform</h3>
-                <p class="project-description">A distributed web platform with real-time collaboration, microservices architecture, and WebSocket data streams.</p>
-                <div class="project-tags">
-                  <span class="project-tag">Node.js</span>
-                  <span class="project-tag">React</span>
-                  <span class="project-tag">PostgreSQL</span>
-                  <span class="project-tag">WebSockets</span>
-                  <span class="project-tag">GSAP</span>
-                </div>
-                <div class="project-link-row">
-                  <a href="#" class="project-link" aria-label="View live project Nexus Full Stack Platform">
-                    <span>View Case</span>
-                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
-
-              <!-- Project 2 -->
-              <article class="card project-card" data-project-id="algo-visualizer" data-category="systems">
-                <div class="project-card-image-wrap">
-                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Algorithmic Motion Lab">
-                    <div class="abstract-shape-mesh"></div>
-                    <div class="abstract-graphic">
-                      <div class="abstract-shape-circle" style="background: var(--grad-2);"></div>
+                  <div class="skill-groups-container">
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Frontend</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">React</span>
+                        <span class="tag-pill">Next.js</span>
+                        <span class="tag-pill">TypeScript</span>
+                        <span class="tag-pill">JavaScript (ES6+)</span>
+                        <span class="tag-pill">HTML5/CSS</span>
+                      </div>
                     </div>
-                    <span class="abstract-badge">02 // 2025</span>
-                    <div class="project-hover-overlay">
-                      <span class="project-hover-pill">
-                        <span>Explore</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Backend &amp; DB</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">Node.js</span>
+                        <span class="tag-pill">Express</span>
+                        <span class="tag-pill">PostgreSQL</span>
+                        <span class="tag-pill">MongoDB</span>
+                        <span class="tag-pill">Redis</span>
+                        <span class="tag-pill">WebSockets</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="project-card-meta">
-                  <span class="project-category">Computer Science &amp; Visuals</span>
-                  <span class="project-year">2025</span>
-                </div>
-                <h3 class="project-title">Algorithmic Motion Lab</h3>
-                <p class="project-description">An interactive algorithm visualizer demonstrating graph traversals, dynamic programming, and tree balancing with smooth state transitions.</p>
-                <div class="project-tags">
-                  <span class="project-tag">Vanilla JS</span>
-                  <span class="project-tag">Data Structures</span>
-                  <span class="project-tag">GSAP</span>
-                  <span class="project-tag">Canvas 2D</span>
-                </div>
-                <div class="project-link-row">
-                  <a href="#" class="project-link" aria-label="View live project Algorithmic Motion Lab">
-                    <span>View Case</span>
-                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
-
-              <!-- Project 3 -->
-              <article class="card project-card" data-project-id="hyper-commerce" data-category="fullstack">
-                <div class="project-card-image-wrap">
-                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Hyper E-Commerce Engine">
-                    <div class="abstract-shape-mesh"></div>
-                    <div class="abstract-graphic">
-                      <div class="abstract-shape-circle" style="background: var(--grad-3);"></div>
-                    </div>
-                    <span class="abstract-badge">03 // 2025</span>
-                    <div class="project-hover-overlay">
-                      <span class="project-hover-pill">
-                        <span>Explore</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
+                  <div class="skill-card-bottom">
+                    <div class="skill-progress-bar-wrap" aria-hidden="true">
+                      <div class="skill-progress-bar-track">
+                        <div class="skill-progress-bar-fill" data-progress="96"></div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="project-card-meta">
-                  <span class="project-category">Full Stack Application</span>
-                  <span class="project-year">2025</span>
-                </div>
-                <h3 class="project-title">Hyper E-Commerce Engine</h3>
-                <p class="project-description">High-speed headless e-commerce store with serverless backend, optimized cart state management, and fluid checkout animations.</p>
-                <div class="project-tags">
-                  <span class="project-tag">TypeScript</span>
-                  <span class="project-tag">Express</span>
-                  <span class="project-tag">MongoDB</span>
-                  <span class="project-tag">Stripe API</span>
-                  <span class="project-tag">Tailwind</span>
-                </div>
-                <div class="project-link-row">
-                  <a href="#" class="project-link" aria-label="View live project Hyper E-Commerce Engine">
-                    <span>View Case</span>
-                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
+                </article>
 
-              <!-- Project 4 -->
-              <article class="card project-card" data-project-id="zenith-dashboard" data-category="motion">
-                <div class="project-card-image-wrap">
-                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Zenith Analytics Suite">
-                    <div class="abstract-shape-mesh"></div>
-                    <div class="abstract-graphic">
-                      <div class="abstract-shape-circle" style="background: var(--grad-4);"></div>
+                <!-- Skill Card 2: CS Core -->
+                <article class="card skill-horizontal-card" data-category="skills" data-skill-id="cs-core">
+                  <div class="skill-card-glow" aria-hidden="true"></div>
+                  <div class="skill-card-top-row">
+                    <span class="skill-card-badge">02 // CS Core</span>
+                    <span class="skill-proficiency-badge">92% Mastery</span>
+                  </div>
+                  <h3 class="skill-card-title">Computer Science Core</h3>
+                  <p class="skill-card-lead">Strong theoretical grounding in data structures, computational complexity, and system design.</p>
+                  <div class="skill-metrics-grid">
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Complexity</span>
+                      <span class="skill-metric-value">O(1)/O(log N)</span>
                     </div>
-                    <span class="abstract-badge">04 // 2025</span>
-                    <div class="project-hover-overlay">
-                      <span class="project-hover-pill">
-                        <span>Explore</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Design</span>
+                      <span class="skill-metric-value">Clean SOLID</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Degree</span>
+                      <span class="skill-metric-value">BS CS 2026</span>
                     </div>
                   </div>
-                </div>
-                <div class="project-card-meta">
-                  <span class="project-category">Motion &amp; Systems</span>
-                  <span class="project-year">2025</span>
-                </div>
-                <h3 class="project-title">Zenith Analytics Suite</h3>
-                <p class="project-description">Real-time enterprise metrics dashboard with high-throughput streaming charts and interactive data filtering.</p>
-                <div class="project-tags">
-                  <span class="project-tag">React</span>
-                  <span class="project-tag">D3.js</span>
-                  <span class="project-tag">GSAP</span>
-                  <span class="project-tag">Node.js</span>
-                  <span class="project-tag">Tailwind</span>
-                </div>
-                <div class="project-link-row">
-                  <a href="#" class="project-link" aria-label="View live project Zenith Analytics Suite">
-                    <span>View Case</span>
-                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
-
-              <!-- Project 5 -->
-              <article class="card project-card" data-project-id="lumina-gateway" data-category="systems">
-                <div class="project-card-image-wrap">
-                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Lumina API Gateway">
-                    <div class="abstract-shape-mesh"></div>
-                    <div class="abstract-graphic">
-                      <div class="abstract-shape-circle" style="background: var(--grad-5);"></div>
+                  <div class="skill-groups-container">
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Algorithms &amp; Logic</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">Data Structures</span>
+                        <span class="tag-pill">Algorithms</span>
+                        <span class="tag-pill">Time Complexity</span>
+                        <span class="tag-pill">Design Patterns</span>
+                      </div>
                     </div>
-                    <span class="abstract-badge">05 // 2024</span>
-                    <div class="project-hover-overlay">
-                      <span class="project-hover-pill">
-                        <span>Explore</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Systems Knowledge</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">Database Normalization</span>
+                        <span class="tag-pill">Operating Systems</span>
+                        <span class="tag-pill">Computer Networks</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="project-card-meta">
-                  <span class="project-category">Distributed Systems</span>
-                  <span class="project-year">2024</span>
-                </div>
-                <h3 class="project-title">Lumina API Gateway</h3>
-                <p class="project-description">Sub-millisecond rate-limiting and reverse proxy service built with Go and Redis for microservice backends.</p>
-                <div class="project-tags">
-                  <span class="project-tag">Go</span>
-                  <span class="project-tag">Redis</span>
-                  <span class="project-tag">Docker</span>
-                  <span class="project-tag">Microservices</span>
-                  <span class="project-tag">REST</span>
-                </div>
-                <div class="project-link-row">
-                  <a href="#" class="project-link" aria-label="View live project Lumina API Gateway">
-                    <span>View Case</span>
-                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
-
-              <!-- Project 6 -->
-              <article class="card project-card" data-project-id="vortex-motion" data-category="motion">
-                <div class="project-card-image-wrap">
-                  <div class="shape-canvas-placeholder" aria-label="Abstract preview graphic for Vortex Creative Engine">
-                    <div class="abstract-shape-mesh"></div>
-                    <div class="abstract-graphic">
-                      <div class="abstract-shape-circle" style="background: var(--grad-6);"></div>
-                    </div>
-                    <span class="abstract-badge">06 // 2024</span>
-                    <div class="project-hover-overlay">
-                      <span class="project-hover-pill">
-                        <span>Explore</span>
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
+                  <div class="skill-card-bottom">
+                    <div class="skill-progress-bar-wrap" aria-hidden="true">
+                      <div class="skill-progress-bar-track">
+                        <div class="skill-progress-bar-fill" data-progress="92"></div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="project-card-meta">
-                  <span class="project-category">Creative WebGL</span>
-                  <span class="project-year">2024</span>
-                </div>
-                <h3 class="project-title">Vortex Creative Engine</h3>
-                <p class="project-description">GPU-accelerated interactive particle system with custom GLSL shaders and responsive cursor physics.</p>
-                <div class="project-tags">
-                  <span class="project-tag">WebGL</span>
-                  <span class="project-tag">Three.js</span>
-                  <span class="project-tag">GSAP</span>
-                  <span class="project-tag">Shader GLSL</span>
-                  <span class="project-tag">Canvas</span>
-                </div>
-                <div class="project-link-row">
-                  <a href="#" class="project-link" aria-label="View live project Vortex Creative Engine">
-                    <span>View Case</span>
-                    <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 12L12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
+                </article>
+
+                <!-- Skill Card 3: Creative Motion -->
+                <article class="card skill-horizontal-card" data-category="skills" data-skill-id="motion-ui">
+                  <div class="skill-card-glow" aria-hidden="true"></div>
+                  <div class="skill-card-top-row">
+                    <span class="skill-card-badge">03 // Motion Tech</span>
+                    <span class="skill-proficiency-badge">95% Mastery</span>
+                  </div>
+                  <h3 class="skill-card-title">Motion &amp; Interactive UI</h3>
+                  <p class="skill-card-lead">Building expressive, GPU-accelerated web animations and fluid scroll interactions.</p>
+                  <div class="skill-metrics-grid">
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Framerate</span>
+                      <span class="skill-metric-value">60+ FPS</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Engine</span>
+                      <span class="skill-metric-value">GSAP Suite</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Graphics</span>
+                      <span class="skill-metric-value">WebGL/Canvas</span>
+                    </div>
+                  </div>
+                  <div class="skill-groups-container">
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">GSAP Architecture</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">ScrollTrigger</span>
+                        <span class="tag-pill">Flip Morphing</span>
+                        <span class="tag-pill">SplitText</span>
+                        <span class="tag-pill">ScrollSmoother</span>
+                      </div>
+                    </div>
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Creative Tech</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">Canvas 2D &amp; SVG</span>
+                        <span class="tag-pill">Three.js</span>
+                        <span class="tag-pill">GLSL Shaders</span>
+                        <span class="tag-pill">Micro-UI</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="skill-card-bottom">
+                    <div class="skill-progress-bar-wrap" aria-hidden="true">
+                      <div class="skill-progress-bar-track">
+                        <div class="skill-progress-bar-fill" data-progress="95"></div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Skill Card 4: DevOps & Tools -->
+                <article class="card skill-horizontal-card" data-category="skills" data-skill-id="tools-devops">
+                  <div class="skill-card-glow" aria-hidden="true"></div>
+                  <div class="skill-card-top-row">
+                    <span class="skill-card-badge">04 // Toolchain</span>
+                    <span class="skill-proficiency-badge">88% Mastery</span>
+                  </div>
+                  <h3 class="skill-card-title">Tools, DevOps &amp; Cloud</h3>
+                  <p class="skill-card-lead">Streamlined development environments, containerized deployments, and robust testing.</p>
+                  <div class="skill-metrics-grid">
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">VCS</span>
+                      <span class="skill-metric-value">Git &amp; GitHub</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Containers</span>
+                      <span class="skill-metric-value">Docker</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Tooling</span>
+                      <span class="skill-metric-value">Vite/Webpack</span>
+                    </div>
+                  </div>
+                  <div class="skill-group-block">
+                    <span class="skill-group-title">DevOps &amp; Infra</span>
+                    <div class="skill-group-tags">
+                      <span class="tag-pill">Docker</span>
+                      <span class="tag-pill">Linux/Bash</span>
+                      <span class="tag-pill">CI/CD Pipelines</span>
+                      <span class="tag-pill">Env Configs</span>
+                    </div>
+                  </div>
+                  <div class="skill-group-block">
+                    <span class="skill-group-title">Testing &amp; Workflow</span>
+                    <div class="skill-group-tags">
+                      <span class="tag-pill">Postman</span>
+                      <span class="tag-pill">Vite</span>
+                      <span class="tag-pill">VS Code</span>
+                      <span class="tag-pill">Agile/Scrum</span>
+                    </div>
+                  </div>
+                  <div class="skill-card-bottom">
+                    <div class="skill-progress-bar-wrap" aria-hidden="true">
+                      <div class="skill-progress-bar-track">
+                        <div class="skill-progress-bar-fill" data-progress="88"></div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Skill Card 5: Engineering Craft -->
+                <article class="card skill-horizontal-card" data-category="skills" data-skill-id="engineering-pillars">
+                  <div class="skill-card-glow" aria-hidden="true"></div>
+                  <div class="skill-card-top-row">
+                    <span class="skill-card-badge">05 // Philosophy</span>
+                    <span class="skill-proficiency-badge">100% Quality</span>
+                  </div>
+                  <h3 class="skill-card-title">Engineering Philosophy</h3>
+                  <p class="skill-card-lead">Guiding principles that govern code quality, scalability, maintainability, and user experience.</p>
+                  <div class="skill-metrics-grid">
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Quality</span>
+                      <span class="skill-metric-value">Clean &amp; Tested</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Lighthouse</span>
+                      <span class="skill-metric-value">95+ Score</span>
+                    </div>
+                    <div class="skill-metric-item">
+                      <span class="skill-metric-label">Design</span>
+                      <span class="skill-metric-value">Defensive</span>
+                    </div>
+                  </div>
+                  <div class="skill-groups-container">
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Core Principles</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">Defensive Architecture</span>
+                        <span class="tag-pill">Maintainable Code</span>
+                        <span class="tag-pill">Accessibility</span>
+                      </div>
+                    </div>
+                    <div class="skill-group-block">
+                      <span class="skill-group-title">Execution Craft</span>
+                      <div class="skill-group-tags">
+                        <span class="tag-pill">Mobile-First</span>
+                        <span class="tag-pill">60 FPS GPU</span>
+                        <span class="tag-pill">Continuous Growth</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="skill-card-bottom">
+                    <div class="skill-progress-bar-wrap" aria-hidden="true">
+                      <div class="skill-progress-bar-track">
+                        <div class="skill-progress-bar-fill" data-progress="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
             </div>
+
           </div>
         </div>
       </section>
-
-      <!-- 4. Skills Section -->
-      <section id="skills" class="section skills-section" aria-labelledby="skills-title">
-        <div class="container">
-          <div class="section-header">
-            <div class="section-badge">
-              <span class="badge-dot"></span>
-              <span>03 // Skills &amp; Stack</span>
-            </div>
-            <h2 id="skills-title" class="section-title">Technical Skills &amp; Computer Science</h2>
-            <p class="section-subtitle">Full-stack competencies spanning frontend engineering, backend services, database design, and algorithmic problem solving.</p>
-          </div>
-
-          <!-- Categorized skills pills -->
-          <div class="skills-categories-grid" id="skills-categories-grid">
-            <!-- Dynamically populated by skills.js -->
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. Contact / Footer Section -->
       <footer id="contact" class="section contact-section" aria-labelledby="contact-title">
         <!-- Abstract Background Glow Shapes for Parallax -->
         <div class="contact-bg-shapes" aria-hidden="true">

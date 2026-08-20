@@ -253,6 +253,30 @@ function smoothScrollTo(targetSelector) {
 
   if (targetSelector === '#hero') {
     targetY = 0;
+  } else if (targetSelector === '#skills') {
+    // Skills is integrated directly inside the long horizontal page canvas
+    const st = typeof ScrollTrigger !== 'undefined' ? ScrollTrigger.getById('projectsHorizontalPin') : null;
+    const canvas = document.querySelector('#horizontal-canvas') || document.querySelector('#projects-track');
+    if (st && canvas) {
+      const distance = Math.max(1, canvas.scrollWidth - window.innerWidth + 120);
+      const offset = targetEl.offsetLeft;
+      const progress = Math.min(1, Math.max(0, (offset - 40) / distance));
+      targetY = st.start + progress * (st.end - st.start);
+    } else {
+      const rect = targetEl.getBoundingClientRect();
+      targetY = Math.max(0, rect.top + window.pageYOffset - navHeight);
+    }
+  } else if (typeof ScrollTrigger !== 'undefined') {
+    // If target is or contains a ScrollTrigger pin trigger, scroll directly to its trigger start
+    const st = ScrollTrigger.getAll().find(
+      (s) => s.trigger === targetEl || (s.pin && (s.pin === targetEl || s.pin.contains(targetEl)))
+    );
+    if (st && typeof st.start === 'number') {
+      targetY = Math.max(0, st.start);
+    } else {
+      const rect = targetEl.getBoundingClientRect();
+      targetY = Math.max(0, rect.top + window.pageYOffset - navHeight);
+    }
   } else {
     const rect = targetEl.getBoundingClientRect();
     targetY = Math.max(0, rect.top + window.pageYOffset - navHeight);

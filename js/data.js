@@ -182,67 +182,123 @@ export const portfolioData = {
 
   skills: [
     {
+      id: 'fullstack-web',
       category: 'Full Stack & Web Dev',
+      badge: '01 // Frontend & Backend Architecture',
       icon: 'code',
       proficiency: 96,
       proficiencyLabel: '96% Production Mastery',
-      items: [
-        'JavaScript (ES6+)',
-        'TypeScript',
-        'React & Next.js',
-        'Node.js & Express',
-        'RESTful APIs & GraphQL',
-        'PostgreSQL & MySQL',
-        'MongoDB & Redis',
-        'HTML5 & Modern CSS',
+      lead: 'Designing responsive client applications paired with resilient, scalable backend services.',
+      metrics: [
+        { label: 'Latency Target', value: '<50ms' },
+        { label: 'API Protocols', value: 'REST & GraphQL' },
+        { label: 'UI Frame Rate', value: '60 FPS' },
+      ],
+      groups: [
+        {
+          groupName: 'Frontend Systems',
+          items: ['React', 'Next.js', 'TypeScript', 'JavaScript (ES6+)', 'HTML5 & Modern CSS'],
+        },
+        {
+          groupName: 'Backend & Data',
+          items: ['Node.js', 'Express', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'WebSockets'],
+        },
       ],
     },
     {
+      id: 'cs-core',
       category: 'Computer Science Core',
+      badge: '02 // Academic & Algorithmic Foundations',
       icon: 'cpu',
       proficiency: 92,
       proficiencyLabel: '92% Academic & Problem Solving',
-      items: [
-        'Data Structures & Algorithms',
-        'Object-Oriented Programming (OOP)',
-        'System Design Fundamentals',
-        'Database Normalization',
-        'Operating Systems & Networking',
-        'Time & Space Complexity Analysis',
-        'Design Patterns',
-        'Software Engineering Practices',
+      lead: 'Strong theoretical grounding in data structures, computational complexity, and system design.',
+      metrics: [
+        { label: 'Complexity', value: 'O(1) & O(log N)' },
+        { label: 'Architecture', value: 'Clean & SOLID' },
+        { label: 'Foundations', value: 'BS CS 2026' },
+      ],
+      groups: [
+        {
+          groupName: 'Core Disciplines',
+          items: ['Data Structures & Algorithms', 'Time & Space Complexity', 'OOP & Design Patterns'],
+        },
+        {
+          groupName: 'Systems Knowledge',
+          items: ['Database Normalization', 'Operating Systems', 'Computer Networks', 'System Design'],
+        },
       ],
     },
     {
+      id: 'motion-ui',
       category: 'Motion & Interactive UI',
+      badge: '03 // High-Fidelity Creative Motion',
       icon: 'sparkles',
       proficiency: 95,
       proficiencyLabel: '95% Animation Architecture',
-      items: [
-        'GSAP (GreenSock Animation)',
-        'ScrollTrigger & Pinning',
-        'ScrollSmoother',
-        'SplitText & Motion Typography',
-        'Flip & State Morphing',
-        'Canvas & SVG Animations',
-        'Responsive UI/UX Engineering',
-        '60 FPS Micro-Interactions',
+      lead: 'Building expressive, GPU-accelerated web animations and fluid scroll interactions.',
+      metrics: [
+        { label: 'Rendering Target', value: '60+ FPS' },
+        { label: 'Engine', value: 'GSAP Suite' },
+        { label: 'Graphics', value: 'WebGL & Canvas' },
+      ],
+      groups: [
+        {
+          groupName: 'Animation Suite',
+          items: ['GSAP Core', 'ScrollTrigger & Pinning', 'ScrollSmoother', 'SplitText', 'GSAP Flip'],
+        },
+        {
+          groupName: 'Creative Tech',
+          items: ['Canvas 2D & SVG', 'WebGL & Three.js Basics', 'Interactive Micro-UI', 'State Morphing'],
+        },
       ],
     },
     {
-      category: 'Tools, DevOps & Workflow',
+      id: 'tools-devops',
+      category: 'Tools, DevOps & Cloud',
+      badge: '04 // Modern Engineering Toolchain',
       icon: 'gauge',
       proficiency: 88,
       proficiencyLabel: '88% Engineering Workflow',
-      items: [
-        'Git & GitHub Version Control',
-        'Docker Basics & Containerization',
-        'Linux / Bash Scripting',
-        'Postman & API Testing',
-        'Vite & Webpack',
-        'CI/CD Pipelines',
-        'VS Code & Debugging Tools',
-        'Agile / Scrum Methodologies',
+      lead: 'Streamlined development environments, containerized deployments, and robust testing.',
+      metrics: [
+        { label: 'Version Control', value: 'Git & GitHub' },
+        { label: 'Containers', value: 'Docker' },
+        { label: 'Tooling', value: 'Vite & Webpack' },
+      ],
+      groups: [
+        {
+          groupName: 'DevOps & Containers',
+          items: ['Docker Basics', 'Linux / Bash Scripting', 'CI/CD Pipelines', 'Environment Configs'],
+        },
+        {
+          groupName: 'Testing & Workflows',
+          items: ['Postman & API Testing', 'Vite', 'Webpack', 'VS Code Debugging', 'Agile / Scrum'],
+        },
+      ],
+    },
+    {
+      id: 'engineering-pillars',
+      category: 'Engineering Philosophy',
+      badge: '05 // Craft & Technical Standards',
+      icon: 'shield',
+      proficiency: 100,
+      proficiencyLabel: '100% Quality Commitment',
+      lead: 'Guiding principles that govern code quality, scalability, maintainability, and user experience.',
+      metrics: [
+        { label: 'Code Quality', value: 'Self-Documenting' },
+        { label: 'Performance', value: 'Lighthouse 95+' },
+        { label: 'Reliability', value: 'Defensive Design' },
+      ],
+      groups: [
+        {
+          groupName: 'Core Principles',
+          items: ['Defensive Architecture', 'Maintainable & Scalable Code', 'Accessibility & Semantic HTML'],
+        },
+        {
+          groupName: 'Execution Craft',
+          items: ['Mobile-First Responsiveness', '60 FPS GPU Compositing', 'Continuous Learning & Growth'],
+        },
       ],
     },
   ],
